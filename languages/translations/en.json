@@ -1,13 +1,16 @@
 {
-    "welcome": "Welcome",
-    "not_found": {
-        "oops": "Oops!",
-        "message": "The page you are looking for does not exist.",
-        "go_home": "Go to home screen!"
-    },
-    "tabs": {
-        "home": "Home",
-        "account": "Account",
-        "settings": "Settings"
-    }
+  "not_found": {
+    "oops": "Oops!",
+    "message": "The page you are looking for does not exist.",
+    "go_home": "Go to home screen!"
+  },
+  "tabs": {
+    "home": "Home",
+    "education": "Education",
+    "experience": "Experience",
+    "projects": "Projects",
+    "awards": "Awards",
+    "skills": "Skills",
+    "contact_info": "Contact Info"
+  }
 }

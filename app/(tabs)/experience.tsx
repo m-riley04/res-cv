@@ -2,12 +2,12 @@ import { Text } from '@/components/common/Text';
 import { useTranslation } from 'react-i18next';
 import { ScrollView, StyleSheet, View } from 'react-native';
 
-export default function SettingsScreen() {
+export default function ExperienceScreen() {
   const { t } = useTranslation();
   return (
     <ScrollView>
       <View style={styles.titleContainer}>
-        <Text>{t('tabs.settings')}</Text>
+        <Text>{t('tabs.experience')}</Text>
       </View>
     </ScrollView>
   );

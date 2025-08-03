@@ -25,15 +25,39 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name={Tab.Account}
+        name={Tab.ContactInfo}
         options={{
-          title: t('tabs.account'),
+          title: t('tabs.contact_info'),
         }}
       />
       <Tabs.Screen
-        name={Tab.Settings}
+        name={Tab.Education}
         options={{
-          title: t('tabs.settings'),
+          title: t('tabs.education'),
+        }}
+      />
+      <Tabs.Screen
+        name={Tab.Experience}
+        options={{
+          title: t('tabs.experience'),
+        }}
+      />
+      <Tabs.Screen
+        name={Tab.Projects}
+        options={{
+          title: t('tabs.projects'),
+        }}
+      />
+      <Tabs.Screen
+        name={Tab.Skills}
+        options={{
+          title: t('tabs.skills'),
+        }}
+      />
+      <Tabs.Screen
+        name={Tab.Awards}
+        options={{
+          title: t('tabs.awards'),
         }}
       />
     </Tabs>

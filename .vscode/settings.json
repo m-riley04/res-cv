@@ -27,5 +27,6 @@
   "editor.autoClosingBrackets": "always",
   "editor.autoClosingQuotes": "always",
   "editor.autoClosingComments": "always",
-  "editor.autoSurround": "languageDefined"
+  "editor.autoSurround": "languageDefined",
+  "i18n-ally.localesPaths": ["languages"]
 }

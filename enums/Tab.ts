@@ -4,6 +4,10 @@
  */
 export enum Tab {
   Home = 'index',
-  Account = 'account',
-  Settings = 'settings',
+  Education = 'education',
+  Experience = 'experience',
+  Projects = 'projects',
+  Awards = 'awards',
+  Skills = 'skills',
+  ContactInfo = 'contact_info',
 }

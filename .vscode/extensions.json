@@ -4,6 +4,7 @@
     "esbenp.prettier-vscode",
     "GitHub.copilot",
     "GitHub.copilot-chat",
-    "christian-kohler.npm-intellisense"
+    "christian-kohler.npm-intellisense",
+    "lokalise.i18n-ally"
   ]
 }

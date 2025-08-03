@@ -1,16 +1,15 @@
-import { StyleSheet, View } from 'react-native';
-
 import { Text } from '@/components/common/Text';
 import { useTranslation } from 'react-i18next';
+import { ScrollView, StyleSheet, View } from 'react-native';
 
-export default function HomeScreen() {
+export default function ProjectsScreen() {
   const { t } = useTranslation();
   return (
-    <View>
+    <ScrollView>
       <View style={styles.titleContainer}>
-        <Text>{t('tabs.home')}</Text>
+        <Text>{t('tabs.projects')}</Text>
       </View>
-    </View>
+    </ScrollView>
   );
 }
 
