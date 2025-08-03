@@ -1,19 +1,19 @@
-import { Text as RNText, StyleSheet, type TextProps } from 'react-native';
+import { StyleSheet, Text, type TextProps } from 'react-native';
 
 import { TextType, TextTypeStyles } from '@/constants';
 
 import { useTheme } from '@/theme';
-import { useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 
-export type CustomTextProps = TextProps & {
+export interface CustomTextProps extends TextProps {
   type?: TextType;
-};
+}
 
 /**
  * Custom Text component that applies styles based on the provided type and current theme.
  * @returns
  */
-export function Text({
+export function ThemedText({
   style,
   type = TextType.Default,
   ...rest
@@ -53,7 +53,7 @@ export function Text({
     ];
   }, [type, getTextStyle]);
 
-  return <RNText style={textStyle} {...rest} />;
+  return <Text style={textStyle} {...rest} />;
 }
 
 const styles = StyleSheet.create({

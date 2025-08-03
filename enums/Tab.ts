@@ -9,5 +9,5 @@ export enum Tab {
   Projects = 'projects',
   Awards = 'awards',
   Skills = 'skills',
-  ContactInfo = 'contact_info',
+  ContactInfo = 'contact-info',
 }

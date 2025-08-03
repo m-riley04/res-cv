@@ -1,6 +1,6 @@
 import { StyleSheet, View } from 'react-native';
 
-import { Text } from '@/components/common/Text';
+import { ThemedText } from '@/components/common/ThemedText';
 import { useTranslation } from 'react-i18next';
 
 export default function HomeScreen() {
@@ -8,7 +8,7 @@ export default function HomeScreen() {
   return (
     <View>
       <View style={styles.titleContainer}>
-        <Text>{t('tabs.home')}</Text>
+        <ThemedText>{t('tabs.home')}</ThemedText>
       </View>
     </View>
   );

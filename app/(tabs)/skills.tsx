@@ -1,4 +1,4 @@
-import { Text } from '@/components/common/Text';
+import { ThemedText } from '@/components/common/ThemedText';
 import { useTranslation } from 'react-i18next';
 import { ScrollView, StyleSheet, View } from 'react-native';
 
@@ -7,7 +7,7 @@ export default function SkillsScreen() {
   return (
     <ScrollView>
       <View style={styles.titleContainer}>
-        <Text>{t('tabs.skills')}</Text>
+        <ThemedText>{t('tabs.skills')}</ThemedText>
       </View>
     </ScrollView>
   );

@@ -1,5 +1,5 @@
 import { SocialMedia, Website } from '@/api';
-import { Text } from '@/components/common';
+import { ThemedText, ThemedTextInput } from '@/components/common';
 import { AddModal } from '@/components/common/AddModal';
 import { AddSocialMediaForm, AddWebsiteForm } from '@/features/contact_info';
 import { useTheme } from '@/theme';
@@ -7,13 +7,7 @@ import { Button } from '@react-navigation/elements';
 import { ExternalPathString, Link } from 'expo-router';
 import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-  FlatList,
-  ScrollView,
-  StyleSheet,
-  TextInput,
-  View,
-} from 'react-native';
+import { FlatList, ScrollView, StyleSheet, View } from 'react-native';
 
 export default function ContactInfoScreen() {
   const { t } = useTranslation();
@@ -48,73 +42,43 @@ export default function ContactInfoScreen() {
         <AddSocialMediaForm />
       </AddModal>
       <View style={styles.titleContainer}>
-        <Text>{t('tabs.contact_info')}</Text>
+        <ThemedText>{t('tabs.contact_info')}</ThemedText>
       </View>
-      <TextInput
-        style={[
-          styles.textInput,
-          { color: theme.inputColor, backgroundColor: theme.inputBackground },
-        ]}
+      <ThemedTextInput
         inputMode='text'
         autoComplete='name-given'
         placeholder={t('contact_info.first_name_placeholder')}
-        placeholderTextColor={theme.inputPlaceholderColor}
       />
-      <TextInput
-        style={[
-          styles.textInput,
-          { color: theme.inputColor, backgroundColor: theme.inputBackground },
-        ]}
+      <ThemedTextInput
         inputMode='text'
         autoComplete='name-middle'
         placeholder={t('contact_info.middle_name_placeholder')}
-        placeholderTextColor={theme.inputPlaceholderColor}
       />
-      <TextInput
-        style={[
-          styles.textInput,
-          { color: theme.inputColor, backgroundColor: theme.inputBackground },
-        ]}
+      <ThemedTextInput
         inputMode='text'
         autoComplete='name-family'
         placeholder={t('contact_info.last_name_placeholder')}
-        placeholderTextColor={theme.inputPlaceholderColor}
       />
-      <TextInput
-        style={[
-          styles.textInput,
-          { color: theme.inputColor, backgroundColor: theme.inputBackground },
-        ]}
+      <ThemedTextInput
         inputMode='email'
         autoComplete='email'
         placeholder={t('contact_info.email_placeholder')}
-        placeholderTextColor={theme.inputPlaceholderColor}
       />
-      <TextInput
-        style={[
-          styles.textInput,
-          { color: theme.inputColor, backgroundColor: theme.inputBackground },
-        ]}
+      <ThemedTextInput
         inputMode='tel'
         autoComplete='tel'
         placeholder={t('contact_info.phone_placeholder')}
-        placeholderTextColor={theme.inputPlaceholderColor}
       />
-      <TextInput
-        style={[
-          styles.textInput,
-          { color: theme.inputColor, backgroundColor: theme.inputBackground },
-        ]}
+      <ThemedTextInput
         inputMode='text'
         autoComplete='address-line1'
         placeholder={t('contact_info.address_placeholder')}
-        placeholderTextColor={theme.inputPlaceholderColor}
       />
       <FlatList
         data={[]}
         renderItem={({ item }: { item: Website }) => (
           <Link href={item.url as ExternalPathString}>
-            <Text>{item.label}</Text>
+            <ThemedText>{item.label}</ThemedText>
           </Link>
         )}
         keyExtractor={(item) => item.id.toString()}
@@ -126,7 +90,7 @@ export default function ContactInfoScreen() {
         data={[]}
         renderItem={({ item }: { item: SocialMedia }) => (
           <Link href={item.url as ExternalPathString}>
-            <Text>{`${item.platform}: ${item.username}`}</Text>
+            <ThemedText>{`${item.platform}: ${item.username}`}</ThemedText>
           </Link>
         )}
         keyExtractor={(item) => item.id.toString()}
@@ -143,5 +107,4 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: 8,
   },
-  textInput: {},
 });

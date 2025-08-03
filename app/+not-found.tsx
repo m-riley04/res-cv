@@ -1,7 +1,7 @@
 import { Link, Stack } from 'expo-router';
 import { StyleSheet, View } from 'react-native';
 
-import { Text } from '@/components/common/Text';
+import { ThemedText } from '@/components/common/ThemedText';
 import { TextType } from '@/constants';
 import { useTranslation } from 'react-i18next';
 
@@ -12,9 +12,9 @@ export default function NotFoundScreen() {
     <>
       <Stack.Screen options={{ title: t('not_found.oops') }} />
       <View style={styles.container}>
-        <Text type={TextType.Title}>{t('not_found.message')}</Text>
+        <ThemedText type={TextType.Title}>{t('not_found.message')}</ThemedText>
         <Link href='/' style={styles.link}>
-          <Text type={TextType.Link}>{t('not_found.go_home')}</Text>
+          <ThemedText type={TextType.Link}>{t('not_found.go_home')}</ThemedText>
         </Link>
       </View>
     </>

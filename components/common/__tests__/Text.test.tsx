@@ -1,7 +1,7 @@
 import { TextType, TextTypeStyles } from '@/constants';
 import { render } from '@testing-library/react-native';
 import React from 'react';
-import { Text } from '../Text';
+import { ThemedText } from '../ThemedText';
 
 describe('<Text />', () => {
   afterEach(() => {
@@ -10,12 +10,12 @@ describe('<Text />', () => {
 
   describe('Basic Rendering', () => {
     it('renders children text correctly', () => {
-      const { getByText } = render(<Text>Hello World</Text>);
+      const { getByText } = render(<ThemedText>Hello World</ThemedText>);
       expect(getByText('Hello World')).toBeTruthy();
     });
 
     it('renders with default type when no type is specified', () => {
-      const { getByText } = render(<Text>Default Text</Text>);
+      const { getByText } = render(<ThemedText>Default Text</ThemedText>);
       const textElement = getByText('Default Text');
       expect(textElement).toBeTruthy();
       expect(textElement.props.style).toEqual(
@@ -27,14 +27,14 @@ describe('<Text />', () => {
 
     it('forwards all text props correctly', () => {
       const { getByText } = render(
-        <Text
+        <ThemedText
           numberOfLines={2}
           ellipsizeMode='tail'
           accessible={true}
           accessibilityLabel='Test Label'
         >
           Test Text
-        </Text>
+        </ThemedText>
       );
       const textElement = getByText('Test Text');
       expect(textElement.props.numberOfLines).toBe(2);
@@ -47,7 +47,7 @@ describe('<Text />', () => {
   describe('Text Types', () => {
     it('renders default type with correct styles', () => {
       const { getByText } = render(
-        <Text type={TextType.Default}>Default Text</Text>
+        <ThemedText type={TextType.Default}>Default Text</ThemedText>
       );
       const textElement = getByText('Default Text');
       expect(textElement.props.style).toEqual(
@@ -59,7 +59,7 @@ describe('<Text />', () => {
 
     it('renders title type with correct styles', () => {
       const { getByText } = render(
-        <Text type={TextType.Title}>Title Text</Text>
+        <ThemedText type={TextType.Title}>Title Text</ThemedText>
       );
       const textElement = getByText('Title Text');
       expect(textElement.props.style).toEqual(
@@ -69,7 +69,7 @@ describe('<Text />', () => {
 
     it('renders defaultSemiBold type with correct styles', () => {
       const { getByText } = render(
-        <Text type={TextType.DefaultSemiBold}>SemiBold Text</Text>
+        <ThemedText type={TextType.DefaultSemiBold}>SemiBold Text</ThemedText>
       );
       const textElement = getByText('SemiBold Text');
       expect(textElement.props.style).toEqual(
@@ -81,7 +81,7 @@ describe('<Text />', () => {
 
     it('renders subtitle type with correct styles', () => {
       const { getByText } = render(
-        <Text type={TextType.Subtitle}>Subtitle Text</Text>
+        <ThemedText type={TextType.Subtitle}>Subtitle Text</ThemedText>
       );
       const textElement = getByText('Subtitle Text');
       expect(textElement.props.style).toEqual(
@@ -92,7 +92,9 @@ describe('<Text />', () => {
     });
 
     it('renders link type with correct styles', () => {
-      const { getByText } = render(<Text type={TextType.Link}>Link Text</Text>);
+      const { getByText } = render(
+        <ThemedText type={TextType.Link}>Link Text</ThemedText>
+      );
       const textElement = getByText('Link Text');
       expect(textElement.props.style).toEqual(
         expect.arrayContaining([expect.objectContaining(TextTypeStyles.link)])
@@ -104,9 +106,9 @@ describe('<Text />', () => {
     it('applies custom style along with type styles', () => {
       const customStyle = { marginTop: 10, backgroundColor: 'red' };
       const { getByText } = render(
-        <Text type={TextType.Title} style={customStyle}>
+        <ThemedText type={TextType.Title} style={customStyle}>
           Styled Text
-        </Text>
+        </ThemedText>
       );
       const textElement = getByText('Styled Text');
       expect(textElement.props.style).toEqual(
@@ -118,7 +120,9 @@ describe('<Text />', () => {
     });
 
     it('handles undefined style gracefully', () => {
-      const { getByText } = render(<Text style={undefined}>No Style</Text>);
+      const { getByText } = render(
+        <ThemedText style={undefined}>No Style</ThemedText>
+      );
       const textElement = getByText('No Style');
       expect(textElement).toBeTruthy();
     });
@@ -126,27 +130,27 @@ describe('<Text />', () => {
 
   describe('Edge Cases', () => {
     it('handles empty text content', () => {
-      const { root } = render(<Text></Text>);
+      const { root } = render(<ThemedText></ThemedText>);
       expect(root).toBeTruthy();
     });
 
     it('handles null children', () => {
-      const { root } = render(<Text>{null}</Text>);
+      const { root } = render(<ThemedText>{null}</ThemedText>);
       expect(root).toBeTruthy();
     });
 
     it('handles undefined children', () => {
-      const { root } = render(<Text>{undefined}</Text>);
+      const { root } = render(<ThemedText>{undefined}</ThemedText>);
       expect(root).toBeTruthy();
     });
 
     it('handles number children', () => {
-      const { getByText } = render(<Text>{42}</Text>);
+      const { getByText } = render(<ThemedText>{42}</ThemedText>);
       expect(getByText('42')).toBeTruthy();
     });
 
     it('handles boolean children', () => {
-      const { root } = render(<Text>{true}</Text>);
+      const { root } = render(<ThemedText>{true}</ThemedText>);
       expect(root).toBeTruthy();
     });
   });
@@ -160,9 +164,9 @@ describe('<Text />', () => {
       };
 
       const { getByText } = render(
-        <Text type={TextType.Title} style={customStyle}>
+        <ThemedText type={TextType.Title} style={customStyle}>
           Override Title
-        </Text>
+        </ThemedText>
       );
 
       const textElement = getByText('Override Title');
@@ -183,7 +187,7 @@ describe('<Text />', () => {
       };
 
       const { getByTestId } = render(
-        <Text {...textProps}>Interactive Text</Text>
+        <ThemedText {...textProps}>Interactive Text</ThemedText>
       );
 
       const textElement = getByTestId('custom-text');

@@ -3,7 +3,7 @@ import { useTheme } from '@/theme';
 import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button, Modal, ModalProps, StyleSheet, View } from 'react-native';
-import { Text } from './Text';
+import { ThemedText } from './ThemedText';
 
 export interface AddModalProps extends ModalProps {
   children: React.ReactNode;
@@ -50,7 +50,7 @@ export function AddModal({
           style={[styles.modalContainer, { backgroundColor: theme.background }]}
         >
           <View style={styles.modalTitle}>
-            <Text type={TextType.Title}>{title}</Text>
+            <ThemedText type={TextType.Title}>{title}</ThemedText>
           </View>
           <View style={styles.modalContent}>{children}</View>
           <View style={styles.modalButtonBox}>
