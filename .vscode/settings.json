@@ -1,0 +1,31 @@
+{
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "always",
+    "source.organizeImports": "always",
+    "source.sortImports": "always",
+    "source.removeUnusedImports": "always",
+    "source.fixAll.ts": "always",
+    "source.fixAll.eslint": "always",
+    "source.addMissingImports.ts": "always"
+  },
+  "eslint.validate": ["javascript", "typescript"],
+  "eslint.format.enable": true,
+  "eslint.lintTask.enable": true,
+  "eslint.run": "onSave",
+  "eslint.codeAction.disableRuleComment": {
+    "enable": true,
+    "location": "separateLine",
+    "commentStyle": "line"
+  },
+  "terminal.integrated.defaultProfile.windows": "Command Prompt",
+  "eslint.codeActionsOnSave.mode": "all",
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.foldingImportsByDefault": false,
+  "editor.suggest.showModules": true,
+  "editor.suggest.showColors": true,
+  "editor.autoClosingBrackets": "always",
+  "editor.autoClosingQuotes": "always",
+  "editor.autoClosingComments": "always",
+  "editor.autoSurround": "languageDefined"
+}
