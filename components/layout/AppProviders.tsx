@@ -1,5 +1,5 @@
-import { i18n } from '@/languages/i18n';
 import { Theme } from '@/theme';
+import { i18n } from '@/translation';
 import {
   DarkTheme,
   DefaultTheme,

@@ -1,0 +1,40 @@
+{
+  "common": {
+    "add": "Add",
+    "cancel": "Cancel"
+  },
+  "contact_info": {
+    "add_social_media": "Add Social Media",
+    "add_website": "Add Website",
+    "address_placeholder": "Address",
+    "email_placeholder": "Email",
+    "first_name_placeholder": "First Name",
+    "last_name_placeholder": "Last Name",
+    "middle_name_placeholder": "Middle Name",
+    "phone_placeholder": "Phone Number",
+    "social_media_label_placeholder": "Label",
+    "social_media_platform_placeholder": "Platform",
+    "social_media_url_placeholder": "Link",
+    "website_label_placeholder": "Website Label",
+    "website_url_placeholder": "Website URL"
+  },
+  "not_found": {
+    "go_home": "Go to home screen!",
+    "message": "The page you are looking for does not exist.",
+    "oops": "Oops!"
+  },
+  "social_media": {
+    "facebook": "Facebook",
+    "instagram": "Instagram",
+    "linkedin": "LinkedIn"
+  },
+  "tabs": {
+    "awards": "Awards",
+    "contact_info": "Contact Info",
+    "education": "Education",
+    "experience": "Experience",
+    "home": "Home",
+    "projects": "Projects",
+    "skills": "Skills"
+  }
+}

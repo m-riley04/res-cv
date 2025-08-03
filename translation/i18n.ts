@@ -1,7 +1,7 @@
+import en from '@/locales/en.json';
 import i18n from 'i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import { initReactI18next } from 'react-i18next';
-import en from './translations/en.json';
 
 i18n
   .use(initReactI18next)
@@ -9,15 +9,15 @@ i18n
   .init({
     resources: {
       en: {
-        translation: en
-      }
+        translation: en,
+      },
     },
-    lng: "en",
-    fallbackLng: "en",
+    lng: 'en',
+    fallbackLng: 'en',
 
     interpolation: {
-      escapeValue: false // React already does escaping
-    }
-    });
+      escapeValue: false, // React already does escaping
+    },
+  });
 
 export { i18n };
