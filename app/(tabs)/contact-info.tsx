@@ -12,7 +12,7 @@ import { FlatList, ScrollView, StyleSheet, View } from 'react-native';
 
 export default function ContactInfoScreen() {
   const { t } = useTranslation();
-  const document = useDocument();
+  const { documentData, updateDocument } = useDocument();
 
   const [addModalVisible, setAddModalVisible] = useState(false);
   const [addSocialMediaVisible, setAddSocialMediaVisible] = useState(false);
@@ -27,18 +27,18 @@ export default function ContactInfoScreen() {
 
   const handleAddWebsite = useCallback((website: Website) => {
     const updatedWebsites = [
-      ...(document.document.contactInfo.websites || []),
+      ...(documentData.contactInfo.websites || []),
       website,
     ];
-    document.updateDocument({ contactInfo: { websites: updatedWebsites } });
+    updateDocument({ contactInfo: { websites: updatedWebsites } });
   }, []);
 
   const handleAddSocialMedia = useCallback((socialMedia: SocialMedia) => {
     const updatedSocialMedia = [
-      ...(document.document.contactInfo.socialMedia || []),
+      ...(documentData.contactInfo.socialMedia || []),
       socialMedia,
     ];
-    document.updateDocument({
+    updateDocument({
       contactInfo: { socialMedia: updatedSocialMedia },
     });
   }, []);
@@ -96,7 +96,7 @@ export default function ContactInfoScreen() {
         placeholder={t('contact_info.address_placeholder')}
       />
       <FlatList
-        data={document.document.contactInfo.websites}
+        data={documentData.contactInfo.websites}
         renderItem={({ item }: { item: Website }) => (
           <WebsiteListItem website={item} />
         )}
@@ -106,7 +106,7 @@ export default function ContactInfoScreen() {
         {t('contact_info.add_website')}
       </Button>
       <FlatList
-        data={document.document.contactInfo.socialMedia}
+        data={documentData.contactInfo.socialMedia}
         renderItem={({ item }: { item: SocialMedia }) => (
           <SocialMediaListItem socialMedia={item} />
         )}

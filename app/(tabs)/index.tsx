@@ -1,6 +1,6 @@
 import { Button, StyleSheet, View } from 'react-native';
 
-import { ThemedText } from '@/components/common/ThemedText';
+import { ThemedText } from '@/components/common';
 import { useDocument } from '@/contexts';
 import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -23,7 +23,11 @@ export default function HomeScreen() {
   const handleImportDocument = useCallback(() => {
     data
       .importDocument()
-      .then(() => {
+      .then((ret) => {
+        if (!ret) {
+          console.error('Document failed to import or was cancelled.');
+          return;
+        }
         console.log('Document imported successfully');
       })
       .catch((error) => {

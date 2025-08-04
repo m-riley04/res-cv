@@ -1,6 +1,7 @@
-import { Document } from '@/api';
+import { CvDocument } from '@/api';
+import { CvDocumentParser } from '@/parsers';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { pick } from '@react-native-documents/picker';
+import * as DocumentPicker from 'expo-document-picker';
 import React, {
   createContext,
   ReactNode,
@@ -13,16 +14,16 @@ const DOCUMENT_STORAGE_KEY = '@res_cv_document';
 const DEFAULT_EXPORT_FILE_NAME = 'cv';
 
 interface DocumentContextType {
-  documentData: Document;
-  setDocumentData: React.Dispatch<React.SetStateAction<Document>>;
-  updateDocument: (updates: Partial<Document>) => void;
+  documentData: CvDocument;
+  setDocumentData: React.Dispatch<React.SetStateAction<CvDocument>>;
+  updateDocument: (updates: Partial<CvDocument>) => void;
   resetDocument: () => void;
   exportDocument: (fileName?: string) => Promise<void>;
-  importDocument: () => Promise<void>;
+  importDocument: () => Promise<CvDocument | null | undefined>;
   isLoading: boolean;
 }
 
-const defaultDocument: Document = {
+const defaultDocument: CvDocument = {
   id: 1,
   contactInfo: {},
   projects: [],
@@ -42,7 +43,7 @@ interface DocumentProviderProps {
 }
 
 export function DocumentProvider({ children }: DocumentProviderProps) {
-  const [documentData, setDocumentData] = useState<Document>(defaultDocument);
+  const [documentData, setDocumentData] = useState<CvDocument>(defaultDocument);
   const [isLoading, setIsLoading] = useState(true);
 
   // Load document from AsyncStorage on mount
@@ -79,7 +80,7 @@ export function DocumentProvider({ children }: DocumentProviderProps) {
    * Saves the document to AsyncStorage.
    * @param documentToSave - The document to save to AsyncStorage.
    */
-  const saveDocument = async (documentToSave: Document) => {
+  const saveDocument = async (documentToSave: CvDocument) => {
     try {
       await AsyncStorage.setItem(
         DOCUMENT_STORAGE_KEY,
@@ -113,24 +114,42 @@ export function DocumentProvider({ children }: DocumentProviderProps) {
     }
   };
 
+  /**
+   * Imports a document from a file using the DocumentPicker.
+   * It reads the file, parses it as JSON, and updates the document state.
+   */
   const importDocument = async () => {
-    const [pickResult] = await pick();
-    if (pickResult) {
-      try {
-        const response = await fetch(pickResult.uri);
-        const json = await response.json();
-        setDocumentData(json);
-      } catch (error) {
-        console.error('Error importing document:', error);
-      }
+    const pickerOptions = {};
+    const file = await DocumentPicker.getDocumentAsync(pickerOptions);
+    const first = (file.assets ?? []).length > 0 ? file.assets?.[0] : null;
+    if (!first) {
+      console.error('No file selected for import');
+      return;
     }
+
+    // Convert the blob to text, then parse it as JSON
+    const text = await first.file?.text();
+    if (!text) {
+      console.error('No text content found in the selected file');
+      return;
+    }
+
+    const doc = CvDocumentParser.safeParse(text);
+    if (!doc) {
+      console.error('CV document is invalid or could not be parsed');
+      return;
+    }
+
+    setDocumentData(doc);
+
+    return doc;
   };
 
   /**
    * Updates the document with new data.
    * @param updates - Partial updates to the document.
    */
-  const updateDocument = (updates: Partial<Document>) => {
+  const updateDocument = (updates: Partial<CvDocument>) => {
     setDocumentData((prev) => ({ ...prev, ...updates }));
   };
 
