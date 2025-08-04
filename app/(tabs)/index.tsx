@@ -35,6 +35,14 @@ export default function HomeScreen() {
       });
   }, [data]);
 
+  const handleResetDocument = useCallback(() => {
+    if (!confirm(t('reset_document_confirmation'))) {
+      return;
+    }
+
+    data.resetDocument();
+  }, [data, t]);
+
   return (
     <View>
       <View style={styles.titleContainer}>
@@ -42,6 +50,7 @@ export default function HomeScreen() {
       </View>
       <Button onPress={handleExportDocument} title={t('export_document')} />
       <Button onPress={handleImportDocument} title={t('import_document')} />
+      <Button onPress={handleResetDocument} title={t('reset_document')} />
     </View>
   );
 }
