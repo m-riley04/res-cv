@@ -19,6 +19,7 @@
     "website_url_placeholder": "Website URL"
   },
   "export_document": "Export Document",
+  "import_document": "Import Document",
   "not_found": {
     "go_home": "Go to home screen!",
     "message": "The page you are looking for does not exist.",

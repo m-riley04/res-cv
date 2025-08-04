@@ -20,12 +20,24 @@ export default function HomeScreen() {
       });
   }, [data]);
 
+  const handleImportDocument = useCallback(() => {
+    data
+      .importDocument()
+      .then(() => {
+        console.log('Document imported successfully');
+      })
+      .catch((error) => {
+        console.error('Error importing document:', error);
+      });
+  }, [data]);
+
   return (
     <View>
       <View style={styles.titleContainer}>
         <ThemedText>{t('tabs.home')}</ThemedText>
       </View>
       <Button onPress={handleExportDocument} title={t('export_document')} />
+      <Button onPress={handleImportDocument} title={t('import_document')} />
     </View>
   );
 }

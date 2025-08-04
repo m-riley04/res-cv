@@ -1,5 +1,6 @@
 import { Document } from '@/api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { pick } from '@react-native-documents/picker';
 import React, {
   createContext,
   ReactNode,
@@ -9,13 +10,15 @@ import React, {
 } from 'react';
 
 const DOCUMENT_STORAGE_KEY = '@res_cv_document';
+const DEFAULT_EXPORT_FILE_NAME = 'cv';
 
 interface DocumentContextType {
-  document: Document;
-  setDocument: React.Dispatch<React.SetStateAction<Document>>;
+  documentData: Document;
+  setDocumentData: React.Dispatch<React.SetStateAction<Document>>;
   updateDocument: (updates: Partial<Document>) => void;
   resetDocument: () => void;
-  exportDocument: () => Promise<void>;
+  exportDocument: (fileName?: string) => Promise<void>;
+  importDocument: () => Promise<void>;
   isLoading: boolean;
 }
 
@@ -39,7 +42,7 @@ interface DocumentProviderProps {
 }
 
 export function DocumentProvider({ children }: DocumentProviderProps) {
-  const [data, setData] = useState<Document>(defaultDocument);
+  const [documentData, setDocumentData] = useState<Document>(defaultDocument);
   const [isLoading, setIsLoading] = useState(true);
 
   // Load document from AsyncStorage on mount
@@ -50,16 +53,20 @@ export function DocumentProvider({ children }: DocumentProviderProps) {
   // Save document to AsyncStorage whenever it changes
   useEffect(() => {
     if (!isLoading) {
-      saveDocument(data);
+      saveDocument(documentData);
     }
-  }, [data, isLoading]);
+  }, [documentData, isLoading]);
 
+  /**
+   * Loads the document from AsyncStorage.
+   * If the document exists, it parses and sets it to state.
+   */
   const loadDocument = async () => {
     try {
       const storedDocument = await AsyncStorage.getItem(DOCUMENT_STORAGE_KEY);
       if (storedDocument) {
         const parsedDocument = JSON.parse(storedDocument);
-        setData(parsedDocument);
+        setDocumentData(parsedDocument);
       }
     } catch (error) {
       console.error('Error loading document from storage:', error);
@@ -68,6 +75,10 @@ export function DocumentProvider({ children }: DocumentProviderProps) {
     }
   };
 
+  /**
+   * Saves the document to AsyncStorage.
+   * @param documentToSave - The document to save to AsyncStorage.
+   */
   const saveDocument = async (documentToSave: Document) => {
     try {
       await AsyncStorage.setItem(
@@ -79,14 +90,20 @@ export function DocumentProvider({ children }: DocumentProviderProps) {
     }
   };
 
-  const exportDocument = async () => {
+  /**
+   * Exports the current document as a JSON file.
+   * This function creates a Blob from the JSON string and triggers a download.
+   */
+  const exportDocument = async (
+    fileName: string = DEFAULT_EXPORT_FILE_NAME
+  ) => {
     try {
-      const jsonDocument = JSON.stringify(data, null, 2);
+      const jsonDocument = JSON.stringify(documentData, null, 2);
       const blob = new Blob([jsonDocument], { type: 'application/json' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = 'cv.json';
+      a.download = `${fileName}.json`;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
@@ -96,18 +113,39 @@ export function DocumentProvider({ children }: DocumentProviderProps) {
     }
   };
 
-  const updateDocument = (updates: Partial<Document>) => {
-    setData((prev) => ({ ...prev, ...updates }));
+  const importDocument = async () => {
+    const [pickResult] = await pick();
+    if (pickResult) {
+      try {
+        const response = await fetch(pickResult.uri);
+        const json = await response.json();
+        setDocumentData(json);
+      } catch (error) {
+        console.error('Error importing document:', error);
+      }
+    }
   };
 
+  /**
+   * Updates the document with new data.
+   * @param updates - Partial updates to the document.
+   */
+  const updateDocument = (updates: Partial<Document>) => {
+    setDocumentData((prev) => ({ ...prev, ...updates }));
+  };
+
+  /**
+   * Resets the document to its default state.
+   */
   const resetDocument = () => {
-    setData(defaultDocument);
+    setDocumentData(defaultDocument);
   };
 
   const value: DocumentContextType = {
-    document: data,
-    setDocument: setData,
+    documentData,
+    setDocumentData,
     exportDocument,
+    importDocument,
     updateDocument,
     resetDocument,
     isLoading,
