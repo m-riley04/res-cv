@@ -1,7 +1,9 @@
 {
   "common": {
     "add": "Add",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "ok": "Ok",
+    "reset": "Reset"
   },
   "contact_info": {
     "add_social_media": "Add Social Media",
@@ -33,6 +35,7 @@
   },
   "reset_document": "Reset Document",
   "reset_document_confirmation": "Are you sure you want to reset your CV? This will erase ALL DATA!!",
+  "reset_document_confirmation_title": "Reset CV",
   "social_media": {
     "facebook": "Facebook",
     "instagram": "Instagram",

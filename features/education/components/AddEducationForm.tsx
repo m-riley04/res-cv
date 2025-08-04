@@ -1,7 +1,7 @@
 import { Activity, Degree, Education, Institution } from '@/api';
 import { ThemedTextInput } from '@/components';
 import { AddModalFormRef } from '@/components/common/AddModal';
-import { DateTimePicker } from '@/components/common/DateTimePicker';
+import { CrossPlatformDatePicker } from '@/components/common/CrossPlatformDatePicker';
 import { ThemedPicker } from '@/components/common/ThemedPicker';
 import { forwardRef, useImperativeHandle, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -72,8 +72,14 @@ export const AddEducationForm = forwardRef<
       >
         {/* Map through institutions and create Picker.Item for each */}
       </ThemedPicker>
-      <DateTimePicker value={startDate ?? new Date()} onChange={setStartDate} />
-      <DateTimePicker value={endDate ?? new Date()} onChange={setEndDate} />
+      <CrossPlatformDatePicker
+        value={startDate ?? new Date()}
+        onChange={setStartDate}
+      />
+      <CrossPlatformDatePicker
+        value={endDate ?? new Date()}
+        onChange={setEndDate}
+      />
       <ThemedTextInput
         inputMode='decimal'
         placeholder={t('education.gpa_placeholder')}
