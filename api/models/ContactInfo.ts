@@ -14,11 +14,11 @@ export interface SocialMedia {
 }
 
 export interface ContactInfo {
-  firstName: string;
-  lastName: string;
+  firstName?: string;
+  lastName?: string;
   middleName?: string;
-  email: string;
-  phone: string;
+  email?: string;
+  phone?: string;
   address?: string;
   websites?: Website[];
   socialMedia?: SocialMedia[];

@@ -1,20 +1,25 @@
 import { TextType } from '@/constants';
 import { useTheme } from '@/theme';
-import { useCallback } from 'react';
+import { cloneElement, useCallback, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button, Modal, ModalProps, StyleSheet, View } from 'react-native';
 import { ThemedText } from './ThemedText';
 
-export interface AddModalProps extends ModalProps {
-  children: React.ReactNode;
+export interface AddModalFormRef<T> {
+  getData: () => T | null;
+  isValid: () => boolean;
+}
+
+export interface AddModalProps<T> extends ModalProps {
+  children: React.ReactElement<{ ref?: React.Ref<AddModalFormRef<T>> }>;
   title: string;
   visible?: boolean;
-  onAdd?: () => void;
+  onAdd?: (data: T) => void;
   onCancel?: () => void;
   onClose?: () => void;
 }
 
-export function AddModal({
+export function AddModal<T>({
   children,
   title,
   visible = false,
@@ -23,13 +28,19 @@ export function AddModal({
   onCancel,
   onClose,
   ...props
-}: AddModalProps) {
+}: AddModalProps<T>) {
   const { t } = useTranslation();
   const theme = useTheme();
+  const formRef = useRef<AddModalFormRef<T>>(null);
 
   const handleAdd = useCallback(() => {
-    onAdd?.();
-    onClose?.();
+    const data = formRef.current?.getData();
+    const isValid = formRef.current?.isValid() ?? false;
+
+    if (data && isValid) {
+      onAdd?.(data);
+      onClose?.();
+    }
   }, [onAdd, onClose]);
 
   const handleCancel = useCallback(() => {
@@ -52,7 +63,9 @@ export function AddModal({
           <View style={styles.modalTitle}>
             <ThemedText type={TextType.Title}>{title}</ThemedText>
           </View>
-          <View style={styles.modalContent}>{children}</View>
+          <View style={styles.modalContent}>
+            {cloneElement(children, { ref: formRef })}
+          </View>
           <View style={styles.modalButtonBox}>
             <Button title={t('common.add')} onPress={handleAdd} />
             <Button title={t('common.cancel')} onPress={handleCancel} />

@@ -1,27 +1,46 @@
 import { SocialMedia, Website } from '@/api';
 import { ThemedText, ThemedTextInput } from '@/components/common';
 import { AddModal } from '@/components/common/AddModal';
+import { useDocument } from '@/contexts';
 import { AddSocialMediaForm, AddWebsiteForm } from '@/features/contact_info';
-import { useTheme } from '@/theme';
+import { SocialMediaListItem } from '@/features/contact_info/components/SocialMediaListItem';
+import { WebsiteListItem } from '@/features/contact_info/components/WebsiteListItem';
 import { Button } from '@react-navigation/elements';
-import { ExternalPathString, Link } from 'expo-router';
 import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FlatList, ScrollView, StyleSheet, View } from 'react-native';
 
 export default function ContactInfoScreen() {
   const { t } = useTranslation();
-  const theme = useTheme();
+  const document = useDocument();
 
   const [addModalVisible, setAddModalVisible] = useState(false);
   const [addSocialMediaVisible, setAddSocialMediaVisible] = useState(false);
 
-  const handleAddWebsite = useCallback(() => {
+  const handleOpenAddWebsite = useCallback(() => {
     setAddModalVisible(true);
   }, []);
 
-  const handleAddSocialMedia = useCallback(() => {
+  const handleOpenAddSocialMedia = useCallback(() => {
     setAddSocialMediaVisible(true);
+  }, []);
+
+  const handleAddWebsite = useCallback((website: Website) => {
+    const updatedWebsites = [
+      ...(document.document.contactInfo.websites || []),
+      website,
+    ];
+    document.updateDocument({ contactInfo: { websites: updatedWebsites } });
+  }, []);
+
+  const handleAddSocialMedia = useCallback((socialMedia: SocialMedia) => {
+    const updatedSocialMedia = [
+      ...(document.document.contactInfo.socialMedia || []),
+      socialMedia,
+    ];
+    document.updateDocument({
+      contactInfo: { socialMedia: updatedSocialMedia },
+    });
   }, []);
 
   return (
@@ -29,6 +48,7 @@ export default function ContactInfoScreen() {
       <AddModal
         title={t('contact_info.add_website')}
         visible={addModalVisible}
+        onAdd={handleAddWebsite}
         onClose={() => setAddModalVisible(false)}
       >
         <AddWebsiteForm />
@@ -37,6 +57,7 @@ export default function ContactInfoScreen() {
       <AddModal
         title={t('contact_info.add_social_media')}
         visible={addSocialMediaVisible}
+        onAdd={handleAddSocialMedia}
         onClose={() => setAddSocialMediaVisible(false)}
       >
         <AddSocialMediaForm />
@@ -75,27 +96,23 @@ export default function ContactInfoScreen() {
         placeholder={t('contact_info.address_placeholder')}
       />
       <FlatList
-        data={[]}
+        data={document.document.contactInfo.websites}
         renderItem={({ item }: { item: Website }) => (
-          <Link href={item.url as ExternalPathString}>
-            <ThemedText>{item.label}</ThemedText>
-          </Link>
+          <WebsiteListItem website={item} />
         )}
         keyExtractor={(item) => item.id.toString()}
       />
-      <Button onPress={handleAddWebsite}>
+      <Button onPress={handleOpenAddWebsite}>
         {t('contact_info.add_website')}
       </Button>
       <FlatList
-        data={[]}
+        data={document.document.contactInfo.socialMedia}
         renderItem={({ item }: { item: SocialMedia }) => (
-          <Link href={item.url as ExternalPathString}>
-            <ThemedText>{`${item.platform}: ${item.username}`}</ThemedText>
-          </Link>
+          <SocialMediaListItem socialMedia={item} />
         )}
         keyExtractor={(item) => item.id.toString()}
       />
-      <Button onPress={handleAddSocialMedia}>
+      <Button onPress={handleOpenAddSocialMedia}>
         {t('contact_info.add_social_media')}
       </Button>
     </ScrollView>

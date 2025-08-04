@@ -1,3 +1,4 @@
+import { DocumentProvider } from '@/contexts';
 import { Theme } from '@/theme';
 import { i18n } from '@/translation';
 import {
@@ -26,11 +27,13 @@ export const AppProviders = ({ children }: { children: React.ReactNode }) => {
   return (
     <I18nextProvider i18n={i18n}>
       <QueryClientProvider client={queryClient}>
-        <ThemeProvider
-          value={colorScheme === Theme.Dark ? DarkTheme : DefaultTheme}
-        >
-          {children}
-        </ThemeProvider>
+        <DocumentProvider>
+          <ThemeProvider
+            value={colorScheme === Theme.Dark ? DarkTheme : DefaultTheme}
+          >
+            {children}
+          </ThemeProvider>
+        </DocumentProvider>
       </QueryClientProvider>
     </I18nextProvider>
   );
