@@ -18,6 +18,12 @@
     "website_label_placeholder": "Website Label",
     "website_url_placeholder": "Website URL"
   },
+  "education": {
+    "add_education": "Add Education",
+    "field_of_study_placeholder": "Field of study",
+    "gpa_placeholder": "GPA",
+    "institution_placeholder": "Institute/University"
+  },
   "export_document": "Export Document",
   "import_document": "Import Document",
   "not_found": {

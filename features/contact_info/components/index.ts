@@ -1,2 +1,2 @@
-export * from './AddSocialMedia';
+export * from './AddSocialMediaForm';
 export * from './AddWebsiteForm';

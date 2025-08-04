@@ -1,14 +1,48 @@
+import { Education } from '@/api';
+import { AddModal } from '@/components';
 import { ThemedText } from '@/components/common/ThemedText';
+import { useDocument } from '@/contexts';
+import { AddEducationForm } from '@/features/education/components/AddEducationForm';
+import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { Button, ScrollView, StyleSheet, View } from 'react-native';
 
 export default function EducationScreen() {
   const { t } = useTranslation();
+  const [isEducationModalVisible, setEducationModalVisible] = useState(false);
+  const { documentData, updateDocument } = useDocument();
+
+  const handleOpenAddEducation = useCallback(() => {
+    setEducationModalVisible(true);
+  }, []);
+
+  const handleCloseEducationModal = useCallback(() => {
+    setEducationModalVisible(false);
+  }, []);
+
+  const handleAddEducation = useCallback((education: Education) => {
+    const updatedEducation = [...(documentData.education || []), education];
+    updateDocument({ education: updatedEducation });
+  }, []);
+
   return (
     <ScrollView>
       <View style={styles.titleContainer}>
         <ThemedText>{t('tabs.education')}</ThemedText>
       </View>
+      <AddModal
+        onRequestClose={handleCloseEducationModal}
+        visible={isEducationModalVisible}
+        title={t('education.add_education')}
+        onAdd={handleAddEducation}
+        onClose={handleCloseEducationModal}
+      >
+        <AddEducationForm />
+      </AddModal>
+      <Button
+        onPress={handleOpenAddEducation}
+        title={t('education.add_education')}
+      />
     </ScrollView>
   );
 }
