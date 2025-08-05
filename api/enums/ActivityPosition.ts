@@ -1,3 +1,5 @@
+import { z } from 'zod';
+
 export enum ActivityPosition {
   Other,
   Leader,
@@ -5,3 +7,5 @@ export enum ActivityPosition {
   Observer,
   Contributor,
 }
+
+export const ActivityPositionSchema = z.enum(ActivityPosition);

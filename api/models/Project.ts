@@ -1,4 +1,5 @@
-import { Skill } from '.';
+import { z } from 'zod';
+import { Skill, SkillSchema } from '.';
 
 export interface Project {
   id: number;
@@ -10,32 +11,12 @@ export interface Project {
   skills: Skill[];
 }
 
-const requiredProperties = [
-  'id',
-  'title',
-  'description',
-  'startDate',
-  'skills',
-];
-
-/**
- * Checks if the provided object is a valid Project.
- * @param project The object to check.
- * @returns True if the object is a valid Project, false otherwise.
- */
-export function isValidProject(project: unknown): project is Project {
-  if (typeof project !== 'object' || project === null) {
-    return false;
-  }
-
-  const candidate = project as Project;
-
-  requiredProperties.forEach((prop) => {
-    if (!Object.hasOwn(candidate, prop)) {
-      console.error(`Property "${prop}" is missing in project`);
-      return false;
-    }
-  });
-
-  return true;
-}
+export const ProjectSchema = z.object({
+  id: z.number(),
+  title: z.string(),
+  description: z.string(),
+  startDate: z.date(),
+  endDate: z.date().optional(),
+  url: z.string().optional(),
+  skills: z.array(SkillSchema),
+});

@@ -1,4 +1,5 @@
-import { ActivityPosition } from '@/api/enums';
+import { ActivityPosition, ActivityPositionSchema } from '@/api/enums';
+import { z } from 'zod';
 
 export interface Activity {
   id: number;
@@ -10,21 +11,12 @@ export interface Activity {
   position?: ActivityPosition;
 }
 
-/**
- * Checks if the provided object is a valid activity.
- * @param obj The object to check.
- * @returns True if the object is a valid activity, false otherwise.
- */
-export function isValidActivity(obj: object): obj is Activity {
-  const requiredFields = ['id', 'title', 'startDate'];
-  const candidate = obj as Activity;
-  return (
-    typeof candidate === 'object' &&
-    candidate !== null &&
-    requiredFields.every((field) => Object.hasOwn(candidate, field)) &&
-    typeof candidate.title === 'string' &&
-    typeof candidate.id === 'number' &&
-    candidate.startDate instanceof Date &&
-    (candidate.endDate === undefined || candidate.endDate instanceof Date)
-  );
-}
+export const ActivitySchema = z.object({
+  id: z.number(),
+  title: z.string(),
+  description: z.string().optional(),
+  startDate: z.date(),
+  endDate: z.date().optional(),
+  url: z.string().optional(),
+  position: ActivityPositionSchema.optional(),
+});

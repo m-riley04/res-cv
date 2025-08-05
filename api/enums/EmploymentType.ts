@@ -1,3 +1,5 @@
+import { z } from 'zod';
+
 export enum EmploymentType {
   FullTime,
   PartTime,
@@ -8,3 +10,5 @@ export enum EmploymentType {
   Apprenticeship,
   Seasonal,
 }
+
+export const EmploymentTypeSchema = z.enum(EmploymentType);

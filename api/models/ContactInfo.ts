@@ -1,4 +1,10 @@
-import { SocialMedia, Website } from './subattributes';
+import { z } from 'zod';
+import {
+  SocialMedia,
+  SocialMediaSchema,
+  Website,
+  WebsiteSchema,
+} from './subattributes';
 
 export interface ContactInfo {
   firstName?: string;
@@ -11,20 +17,13 @@ export interface ContactInfo {
   socialMedia?: SocialMedia[];
 }
 
-/**
- * Determines if the provided object is a valid contact information structure.
- * @param contactInfo The object to check.
- * @returns True if the object is a valid contact information structure, false otherwise.
- */
-export function isValidContactInfo(
-  contactInfo: unknown
-): contactInfo is ContactInfo {
-  if (typeof contactInfo !== 'object' || contactInfo === null) {
-    return false;
-  }
-
-  const candidate = contactInfo as ContactInfo;
-
-  // TODO: Add more specific validation for each field if necessary (all are optional right now)
-  return true;
-}
+export const ContactInfoSchema = z.object({
+  firstName: z.string().optional(),
+  lastName: z.string().optional(),
+  middleName: z.string().optional(),
+  email: z.string().email().optional(),
+  phone: z.string().optional(),
+  address: z.string().optional(),
+  websites: z.array(WebsiteSchema).optional(),
+  socialMedia: z.array(SocialMediaSchema).optional(),
+});

@@ -1,4 +1,5 @@
-import { Skill } from '..';
+import { z } from 'zod';
+import { Skill, SkillSchema } from '..';
 
 export interface Course {
   id: number;
@@ -11,27 +12,13 @@ export interface Course {
   url?: string;
 }
 
-export function isValidCourse(course: unknown): course is Course {
-  if (typeof course !== 'object' || course === null) {
-    return false;
-  }
-
-  const candidate = course as Course;
-
-  const hasRequiredFields = ['id', 'title', 'code'].every((field) => {
-    return Object.hasOwn(candidate, field);
-  });
-  if (!hasRequiredFields) {
-    return false;
-  }
-
-  return (
-    typeof candidate.id === 'number' &&
-    typeof candidate.title === 'string' &&
-    typeof candidate.code === 'string' &&
-    Array.isArray(candidate.skills) &&
-    candidate.skills.every(
-      (skill) => typeof skill === 'object' && 'id' in skill && 'name' in skill
-    )
-  );
-}
+export const CourseSchema = z.object({
+  id: z.number(),
+  title: z.string(),
+  code: z.string(),
+  description: z.string().optional(),
+  credits: z.number().optional(),
+  grade: z.string().optional(),
+  skills: z.array(SkillSchema).optional(),
+  url: z.string().optional(),
+});

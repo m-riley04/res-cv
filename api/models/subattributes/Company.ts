@@ -1,7 +1,14 @@
+import { z } from 'zod';
+
 export interface Company {
   name: string;
   website?: string;
 }
+
+export const CompanySchema = z.object({
+  name: z.string(),
+  website: z.string().optional(),
+});
 
 /**
  * Checks if the provided object is a valid company entry.

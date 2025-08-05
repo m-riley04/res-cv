@@ -1,3 +1,5 @@
+import { z } from 'zod';
+
 export enum SocialMediaPlatform {
   LinkedIn = 'LinkedIn',
   GitHub = 'GitHub',
@@ -7,3 +9,5 @@ export enum SocialMediaPlatform {
   YouTube = 'YouTube',
   TikTok = 'TikTok',
 }
+
+export const SocialMediaPlatformSchema = z.enum(SocialMediaPlatform);

@@ -1,5 +1,4 @@
-import { CvDocument } from '@/api';
-import { CvDocumentParser } from '@/parsers';
+import { CvDocument, CvDocumentSchema } from '@/api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as DocumentPicker from 'expo-document-picker';
 import React, {
@@ -134,15 +133,17 @@ export function DocumentProvider({ children }: DocumentProviderProps) {
       return;
     }
 
-    const doc = CvDocumentParser.safeParse(text);
-    if (!doc) {
-      console.error('CV document is invalid or could not be parsed');
+    const doc = CvDocumentSchema.safeParse(JSON.parse(text));
+    if (!doc.success) {
+      console.error(
+        `CV document is invalid or could not be parsed: ${doc.error}`
+      );
       return;
     }
 
-    setDocumentData(doc);
+    setDocumentData(doc.data);
 
-    return doc;
+    return doc.data;
   };
 
   /**
