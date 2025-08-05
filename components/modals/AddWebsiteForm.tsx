@@ -1,6 +1,5 @@
 import { Website } from '@/api';
-import { ThemedTextInput } from '@/components';
-import { AddModalFormRef } from '@/components/common/AddModal';
+import { AddModalFormRef, ThemedTextInput } from '@/components';
 import { forwardRef, useImperativeHandle, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ScrollView } from 'react-native';

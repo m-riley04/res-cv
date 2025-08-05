@@ -1,7 +1,6 @@
 import { SocialMedia, SocialMediaPlatform } from '@/api';
 import { ThemedTextInput } from '@/components';
-import { AddModalFormRef } from '@/components/common/AddModal';
-import { ThemedPicker } from '@/components/common/ThemedPicker';
+import { AddModalFormRef, ThemedPicker } from '@/components/common';
 import { Picker } from '@react-native-picker/picker';
 import { forwardRef, useImperativeHandle, useState } from 'react';
 import { useTranslation } from 'react-i18next';

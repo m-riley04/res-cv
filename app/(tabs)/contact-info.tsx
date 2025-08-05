@@ -1,10 +1,13 @@
 import { SocialMedia, Website } from '@/api';
 import { ThemedText, ThemedTextInput } from '@/components/common';
 import { AddModal } from '@/components/common/AddModal';
+import {
+  AddSocialMediaForm,
+  AddWebsiteForm,
+  SocialMediaListItem,
+  WebsiteListItem,
+} from '@/components/modals';
 import { useDocument } from '@/contexts';
-import { AddSocialMediaForm, AddWebsiteForm } from '@/features/contact_info';
-import { SocialMediaListItem } from '@/features/contact_info/components/SocialMediaListItem';
-import { WebsiteListItem } from '@/features/contact_info/components/WebsiteListItem';
 import { Button } from '@react-navigation/elements';
 import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';

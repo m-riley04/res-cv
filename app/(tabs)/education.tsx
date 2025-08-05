@@ -1,8 +1,6 @@
 import { Education } from '@/api';
-import { AddModal } from '@/components';
-import { ThemedText } from '@/components/common/ThemedText';
+import { AddEducationForm, AddModal, ThemedText } from '@/components';
 import { useDocument } from '@/contexts';
-import { AddEducationForm } from '@/features/education/components/AddEducationForm';
 import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button, ScrollView, StyleSheet, View } from 'react-native';
