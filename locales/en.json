@@ -1,4 +1,7 @@
 {
+  "awards": {
+    "add_award": "Add Award"
+  },
   "common": {
     "add": "Add",
     "cancel": "Cancel",
@@ -25,6 +28,10 @@
     "field_of_study_placeholder": "Field of study",
     "gpa_placeholder": "GPA",
     "institution_placeholder": "Institute/University"
+  },
+  "experience": {
+    "add": "Add Position",
+    "add_position": "Add Position"
   },
   "export_document": "Export Document",
   "import_document": "Import Document",
@@ -53,9 +60,18 @@
     "location_type_remote": "Remote",
     "skills_placeholder": "Skills"
   },
+  "projects": {
+    "add_project": "Add Project",
+    "description_placeholder": "Project Description",
+    "title_placeholder": "Project Title",
+    "url_placeholder": "Project URL"
+  },
   "reset_document": "Reset Document",
   "reset_document_confirmation": "Are you sure you want to reset your CV? This will erase ALL DATA!!",
   "reset_document_confirmation_title": "Reset CV",
+  "skills": {
+    "add_skill": "Add Skill"
+  },
   "social_media": {
     "facebook": "Facebook",
     "instagram": "Instagram",

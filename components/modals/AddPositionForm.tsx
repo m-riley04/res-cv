@@ -1,4 +1,4 @@
-import { Company, EmploymentType, LocationType, Position } from '@/api';
+import { Company, EmploymentType, LocationType, Position, Skill } from '@/api';
 import { ThemedTextInput } from '@/components';
 import { AddModalFormRef, ThemedPicker } from '@/components/common';
 import { Picker } from '@react-native-picker/picker';
@@ -24,7 +24,7 @@ export const AddPositionForm = forwardRef<
   const [startDate, setStartDate] = useState<Date>();
   const [endDate, setEndDate] = useState<Date>();
   const [description, setDescription] = useState('');
-  const [skills, setSkills] = useState<string[]>([]);
+  const [skills, setSkills] = useState<Skill[]>([]);
 
   useImperativeHandle(ref, () => ({
     getData: () => {
@@ -51,10 +51,7 @@ export const AddPositionForm = forwardRef<
         startDate,
         endDate,
         description: description.trim(),
-        skills: skills.map((skill, idx) => ({
-          id: Date.now() + idx, // Temporary unique ID for each skill
-          name: skill,
-        })), // Convert string[] to Skill[]
+        skills, // Convert string[] to Skill[]
       };
     },
     isValid: () => {
@@ -163,14 +160,14 @@ export const AddPositionForm = forwardRef<
         value={description}
         onChangeText={setDescription}
       />
-      <ThemedTextInput
+      {/* <ThemedTextInput
         inputMode='text' // TODO: make this it's own component that allows adding multiple skills/tags
         placeholder={t('position.skills_placeholder')}
         value={skills.join(', ')}
         onChangeText={(text) =>
           setSkills(text.split(',').map((skill) => skill.trim()))
         }
-      />
+      /> */}
     </ScrollView>
   );
 });
