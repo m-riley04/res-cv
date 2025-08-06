@@ -1,22 +1,15 @@
 import { Education } from '@/api';
 import { AddEducationForm, AddModal, ThemedText } from '@/components';
 import { useDocument } from '@/contexts';
-import { useCallback, useState } from 'react';
+import { useToggle } from '@uidotdev/usehooks';
+import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button, ScrollView, StyleSheet, View } from 'react-native';
 
 export default function EducationScreen() {
   const { t } = useTranslation();
-  const [isEducationModalVisible, setEducationModalVisible] = useState(false);
+  const [isModalVisible, toggleModal] = useToggle();
   const { documentData, updateDocument } = useDocument();
-
-  const handleOpenAddEducation = useCallback(() => {
-    setEducationModalVisible(true);
-  }, []);
-
-  const handleCloseEducationModal = useCallback(() => {
-    setEducationModalVisible(false);
-  }, []);
 
   const handleAddEducation = useCallback((education: Education) => {
     const updatedEducation = [...(documentData.education || []), education];
@@ -29,16 +22,16 @@ export default function EducationScreen() {
         <ThemedText>{t('tabs.education')}</ThemedText>
       </View>
       <AddModal
-        onRequestClose={handleCloseEducationModal}
-        visible={isEducationModalVisible}
+        visible={isModalVisible}
         title={t('education.add_education')}
         onAdd={handleAddEducation}
-        onClose={handleCloseEducationModal}
+        onClose={() => toggleModal(false)}
+        onRequestClose={() => toggleModal(false)}
       >
         <AddEducationForm />
       </AddModal>
       <Button
-        onPress={handleOpenAddEducation}
+        onPress={() => toggleModal(true)}
         title={t('education.add_education')}
       />
     </ScrollView>

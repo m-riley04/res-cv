@@ -12,6 +12,7 @@ export function ThemedTextInput(props: ThemedTextInputProps) {
         {
           color: theme.inputColor,
           backgroundColor: theme.inputBackground,
+          borderColor: theme.inputBorderColor,
         },
       ]}
       {...props}
@@ -20,5 +21,9 @@ export function ThemedTextInput(props: ThemedTextInputProps) {
 }
 
 const styles = StyleSheet.create({
-  textInput: {},
+  textInput: {
+    padding: 16,
+    borderColor: 'gray',
+    borderWidth: 1,
+  },
 });

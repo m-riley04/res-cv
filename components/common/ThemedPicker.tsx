@@ -13,6 +13,7 @@ export function ThemedPicker({ ...props }: ThemedPickerProps) {
         {
           backgroundColor: theme.inputBackground,
           color: theme.inputColor,
+          borderColor: theme.inputBorderColor,
         },
       ]}
       itemStyle={[styles.pickerItem]}
@@ -22,6 +23,8 @@ export function ThemedPicker({ ...props }: ThemedPickerProps) {
 }
 
 const styles = StyleSheet.create({
-  picker: {},
+  picker: {
+    padding: 16,
+  },
   pickerItem: {},
 });

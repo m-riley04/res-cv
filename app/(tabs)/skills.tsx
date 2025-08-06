@@ -1,21 +1,14 @@
 import { Skill } from '@/api';
 import { AddModal } from '@/components';
 import { ThemedText } from '@/components/common/ThemedText';
-import React, { useCallback, useState } from 'react';
+import { useToggle } from '@uidotdev/usehooks';
+import React, { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button, ScrollView, StyleSheet, View } from 'react-native';
 
 export default function SkillsScreen() {
   const { t } = useTranslation();
-  const [isAddSkillModalVisible, setAddSkillModalVisible] = useState(false);
-
-  const handleOpenAddSkillModal = useCallback(() => {
-    setAddSkillModalVisible(true);
-  }, []);
-
-  const handleCloseAddSkillModal = useCallback(() => {
-    setAddSkillModalVisible(false);
-  }, []);
+  const [isModalVisible, toggleModal] = useToggle();
 
   const handleAddSkill = useCallback((skill: Skill) => {
     // Logic to handle adding a Skill
@@ -24,8 +17,8 @@ export default function SkillsScreen() {
     <ScrollView>
       <AddModal
         title={t('skills.add_skill')}
-        visible={isAddSkillModalVisible}
-        onClose={handleCloseAddSkillModal}
+        visible={isModalVisible}
+        onClose={() => toggleModal(false)}
         onAdd={handleAddSkill}
       >
         <View></View>
@@ -34,7 +27,7 @@ export default function SkillsScreen() {
       <View style={styles.titleContainer}>
         <ThemedText>{t('tabs.skills')}</ThemedText>
       </View>
-      <Button onPress={handleOpenAddSkillModal} title={t('skills.add_skill')} />
+      <Button onPress={() => toggleModal(true)} title={t('skills.add_skill')} />
     </ScrollView>
   );
 }

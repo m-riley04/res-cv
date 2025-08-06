@@ -9,7 +9,8 @@ import {
 } from '@/components/modals';
 import { useDocument } from '@/contexts';
 import { Button } from '@react-navigation/elements';
-import { useCallback, useState } from 'react';
+import { useToggle } from '@uidotdev/usehooks';
+import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FlatList, ScrollView, StyleSheet, View } from 'react-native';
 
@@ -17,16 +18,9 @@ export default function ContactInfoScreen() {
   const { t } = useTranslation();
   const { documentData, updateDocument } = useDocument();
 
-  const [addModalVisible, setAddModalVisible] = useState(false);
-  const [addSocialMediaVisible, setAddSocialMediaVisible] = useState(false);
-
-  const handleOpenAddWebsite = useCallback(() => {
-    setAddModalVisible(true);
-  }, []);
-
-  const handleOpenAddSocialMedia = useCallback(() => {
-    setAddSocialMediaVisible(true);
-  }, []);
+  const [isAddWebsiteVisible, toggleAddWebsiteVisible] = useToggle(false);
+  const [isAddSocialMediaVisible, toggleAddSocialMediaVisible] =
+    useToggle(false);
 
   const handleAddWebsite = useCallback((website: Website) => {
     const updatedWebsites = [
@@ -50,18 +44,18 @@ export default function ContactInfoScreen() {
     <ScrollView>
       <AddModal
         title={t('contact_info.add_website')}
-        visible={addModalVisible}
+        visible={isAddWebsiteVisible}
         onAdd={handleAddWebsite}
-        onClose={() => setAddModalVisible(false)}
+        onClose={() => toggleAddWebsiteVisible(false)}
       >
         <AddWebsiteForm />
       </AddModal>
 
       <AddModal
         title={t('contact_info.add_social_media')}
-        visible={addSocialMediaVisible}
+        visible={isAddSocialMediaVisible}
         onAdd={handleAddSocialMedia}
-        onClose={() => setAddSocialMediaVisible(false)}
+        onClose={() => toggleAddSocialMediaVisible(false)}
       >
         <AddSocialMediaForm />
       </AddModal>
@@ -105,7 +99,7 @@ export default function ContactInfoScreen() {
         )}
         keyExtractor={(item) => item.id.toString()}
       />
-      <Button onPress={handleOpenAddWebsite}>
+      <Button onPress={() => toggleAddWebsiteVisible(true)}>
         {t('contact_info.add_website')}
       </Button>
       <FlatList
@@ -115,7 +109,7 @@ export default function ContactInfoScreen() {
         )}
         keyExtractor={(item) => item.id.toString()}
       />
-      <Button onPress={handleOpenAddSocialMedia}>
+      <Button onPress={() => toggleAddSocialMediaVisible(true)}>
         {t('contact_info.add_social_media')}
       </Button>
     </ScrollView>
