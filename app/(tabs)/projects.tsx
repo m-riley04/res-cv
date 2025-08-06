@@ -2,14 +2,14 @@ import { Project } from '@/api';
 import { AddModal } from '@/components';
 import { ThemedText } from '@/components/common/ThemedText';
 import { AddProjectForm } from '@/components/modals/AddProjectForm';
-import { useToggle } from '@uidotdev/usehooks';
+import { useVisible } from '@/hooks';
 import React, { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button, ScrollView, StyleSheet, View } from 'react-native';
 
 export default function ProjectsScreen() {
   const { t } = useTranslation();
-  const [isModalVisible, toggleModal] = useToggle();
+  const { visible, show, hide } = useVisible();
 
   const handleAddProject = useCallback((project: Project) => {
     // Logic to handle adding a project
@@ -18,8 +18,8 @@ export default function ProjectsScreen() {
     <ScrollView>
       <AddModal
         title={t('projects.add_project')}
-        visible={isModalVisible}
-        onClose={() => toggleModal(false)}
+        visible={visible}
+        onClose={hide}
         onAdd={handleAddProject}
       >
         <AddProjectForm />
@@ -27,10 +27,7 @@ export default function ProjectsScreen() {
       <View style={styles.titleContainer}>
         <ThemedText>{t('tabs.projects')}</ThemedText>
       </View>
-      <Button
-        onPress={() => toggleModal(true)}
-        title={t('projects.add_project')}
-      />
+      <Button onPress={show} title={t('projects.add_project')} />
     </ScrollView>
   );
 }

@@ -1,19 +1,30 @@
 import { z } from 'zod';
 
+export enum UniversityIndexableProperty {
+  Name = 'name',
+  Country = 'country',
+  StateProvince = 'state-province',
+  AlphaTwoCode = 'alpha_two_code',
+}
+
+export const UniversityIndexablePropertySchema = z.enum(
+  UniversityIndexableProperty
+);
+
 export interface University {
-  name: string;
+  [UniversityIndexableProperty.Name]: string;
+  [UniversityIndexableProperty.Country]: string;
+  [UniversityIndexableProperty.StateProvince]?: string;
+  [UniversityIndexableProperty.AlphaTwoCode]: string;
   domains: string[];
   web_pages: string[];
-  country: string;
-  alpha_two_code: string;
-  'state-province'?: string;
 }
 
 export const UniversitySchema = z.object({
-  name: z.string(),
+  [UniversityIndexableProperty.Name]: z.string(),
   domains: z.array(z.string()),
   web_pages: z.array(z.string()),
-  country: z.string(),
-  alpha_two_code: z.string().length(2),
-  'state-province': z.string().optional(),
+  [UniversityIndexableProperty.Country]: z.string(),
+  [UniversityIndexableProperty.AlphaTwoCode]: z.string().length(2),
+  [UniversityIndexableProperty.StateProvince]: z.string().optional().nullable(),
 });

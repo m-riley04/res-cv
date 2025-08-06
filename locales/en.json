@@ -85,5 +85,8 @@
     "home": "Home",
     "projects": "Projects",
     "skills": "Skills"
+  },
+  "university": {
+    "search": "Search for university..."
   }
 }

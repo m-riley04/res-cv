@@ -1,14 +1,14 @@
 import { Award } from '@/api';
 import { AddModal } from '@/components';
 import { ThemedText } from '@/components/common/ThemedText';
-import { useToggle } from '@uidotdev/usehooks';
+import { useVisible } from '@/hooks';
 import React, { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button, ScrollView, StyleSheet, View } from 'react-native';
 
 export default function AwardsScreen() {
   const { t } = useTranslation();
-  const [isAddAwardVisible, toggleAddAwardVisible] = useToggle(false);
+  const { visible, show, hide } = useVisible();
 
   const handleAddAward = useCallback((award: Award) => {
     // Logic to handle adding a Award
@@ -17,8 +17,8 @@ export default function AwardsScreen() {
     <ScrollView>
       <AddModal
         title={t('awards.add_award')}
-        visible={isAddAwardVisible}
-        onClose={() => toggleAddAwardVisible(false)}
+        visible={visible}
+        onClose={hide}
         onAdd={handleAddAward}
       >
         <View></View>
@@ -27,10 +27,7 @@ export default function AwardsScreen() {
       <View style={styles.titleContainer}>
         <ThemedText>{t('tabs.awards')}</ThemedText>
       </View>
-      <Button
-        onPress={() => toggleAddAwardVisible(true)}
-        title={t('awards.add_award')}
-      />
+      <Button onPress={show} title={t('awards.add_award')} />
     </ScrollView>
   );
 }

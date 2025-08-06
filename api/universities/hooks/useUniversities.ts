@@ -1,49 +1,33 @@
-import { University } from '..';
+import { useCallback, useMemo } from 'react';
+import { University, UniversityIndexableProperty } from '..';
 import universitiesJson from '../world_universities_and_domains.json';
 
-export enum UniversityFilter {
-  Name = 'name',
-  Country = 'country',
-  StateProvince = 'state-province',
-  AlphaTwoCode = 'alpha_two_code',
-}
-
 export function useUniversities() {
-  const universities = universitiesJson as University[];
+  const universities = useMemo(() => universitiesJson as University[], []);
 
   /**
-   * Filters the list of universities based on the provided filters.
-   * @param filters An array of filters to apply.
-   * @returns An array of filtered universities.
+   * Queries the list of universities based on a specific indexable property.
+   * @param query The query string to search for.
+   * @param indexableProperty The property to search within the university object.
+   * @param reverse Whether to reverse the filter logic. If true, it will return universities that do not match the query.
+   * @returns An array of universities that match (or do not match) the query.
    */
-  const filterUniversities = (filters: UniversityFilter[]): University[] => {
-    return universities.filter((university) => {
-      return filters.every((filter) => {
-        switch (filter) {
-          case UniversityFilter.Name:
-            return university.name
-              .toLowerCase()
-              .includes(filter.valueOf().toLowerCase());
-          case UniversityFilter.Country:
-            return university.country
-              .toLowerCase()
-              .includes(filter.valueOf().toLowerCase());
-          case UniversityFilter.StateProvince:
-            return university['state-province']
-              ?.toLowerCase()
-              .includes(filter.valueOf().toLowerCase());
-          case UniversityFilter.AlphaTwoCode:
-            return university.alpha_two_code
-              .toLowerCase()
-              .includes(filter.valueOf().toLowerCase());
-          default:
-            return true;
-        }
+  const queryUniversities = useCallback(
+    (
+      query: string,
+      indexableProperty: UniversityIndexableProperty,
+      reverse: boolean = false
+    ): University[] => {
+      return universities.filter((university) => {
+        const value = university[indexableProperty]?.includes(query);
+        return reverse ? !value : value;
       });
-    });
-  };
+    },
+    []
+  );
 
   return {
     universities,
+    queryUniversities,
   };
 }

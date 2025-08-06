@@ -1,10 +1,9 @@
+import { University, UniversitySchema } from '../universities';
 import {
   Activity,
   ActivitySchema,
   Degree,
   DegreeSchema,
-  Institution,
-  InstitutionSchema,
 } from './subattributes';
 
 import { z } from 'zod';
@@ -14,7 +13,7 @@ export interface Education {
   majors?: Degree[];
   minors?: Degree[];
   fieldOfStudy?: string;
-  institution: Institution;
+  university: University;
   activities?: Activity[];
   startDate: Date;
   endDate?: Date;
@@ -26,7 +25,7 @@ export const EducationSchema = z.object({
   majors: z.array(DegreeSchema).optional(),
   minors: z.array(DegreeSchema).optional(),
   fieldOfStudy: z.string().optional(),
-  institution: InstitutionSchema,
+  university: UniversitySchema,
   activities: z.array(ActivitySchema).optional(),
   startDate: z.date(),
   endDate: z.date().optional(),

@@ -1,11 +1,20 @@
-import { Activity, Degree, Education, Institution } from '@/api';
+import { Activity, Degree, Education, EducationSchema } from '@/api';
+import {
+  University,
+  UniversityIndexableProperty,
+  useUniversities,
+} from '@/api/universities';
 import { ThemedTextInput } from '@/components';
 import { AddModalFormRef } from '@/components/common/AddModal';
 import { CrossPlatformDatePicker } from '@/components/common/CrossPlatformDatePicker';
-import { ThemedPicker } from '@/components/common/ThemedPicker';
-import { forwardRef, useImperativeHandle, useState } from 'react';
+import { forwardRef, useImperativeHandle, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ScrollView } from 'react-native';
+import { SearchableDropdown } from '../common/SearchableDropdown';
+
+interface UniversitySearchable extends University {
+  label: string;
+}
 
 export interface AddEducationFormProps {}
 
@@ -16,44 +25,50 @@ export const AddEducationForm = forwardRef<
   const { t } = useTranslation();
   const [majors, setMajors] = useState<Degree[]>([]);
   const [minors, setMinors] = useState<Degree[]>([]);
-  const [fieldOfStudy, setFieldOfStudy] = useState('');
-  const [institution, setInstitution] = useState<Institution>();
+  const [fieldOfStudy, setFieldOfStudy] = useState<string | undefined>(
+    undefined
+  );
+  const [university, setUniversity] = useState<University>();
   const [activities, setActivities] = useState<Activity[]>([]);
   const [startDate, setStartDate] = useState<Date | undefined>(undefined);
   const [endDate, setEndDate] = useState<Date | undefined>(undefined);
   const [gpa, setGpa] = useState<number | undefined>(undefined);
 
+  const { queryUniversities } = useUniversities();
+
+  const parsedEducation = useMemo(() => {
+    return EducationSchema.safeParse({
+      id: Date.now(), // TODO: generate ID differently, likely will come from backend
+      fieldOfStudy,
+      university,
+      startDate,
+      endDate,
+      gpa,
+      majors,
+      minors,
+      activities,
+    });
+  }, [
+    fieldOfStudy,
+    university,
+    startDate,
+    endDate,
+    gpa,
+    majors,
+    minors,
+    activities,
+  ]);
+
   useImperativeHandle(ref, () => ({
     getData: () => {
-      if (
-        !fieldOfStudy.trim() ||
-        !institution ||
-        !startDate ||
-        !endDate ||
-        !gpa
-      ) {
+      if (!parsedEducation?.success) {
+        console.log('Invalid education data:', parsedEducation.error);
         return null;
       }
-      return {
-        id: Date.now(), // TODO: generate ID differently, likely will come from backend
-        fieldOfStudy: fieldOfStudy.trim(),
-        institution,
-        startDate,
-        endDate,
-        gpa,
-        majors,
-        minors,
-        activities,
-      };
+      return parsedEducation.data as Education;
     },
     isValid: () => {
-      return (
-        fieldOfStudy.trim().length > 0 &&
-        institution !== undefined &&
-        startDate !== undefined &&
-        endDate !== undefined &&
-        gpa !== undefined
-      );
+      return parsedEducation.success;
     },
   }));
 
@@ -65,13 +80,17 @@ export const AddEducationForm = forwardRef<
         value={fieldOfStudy}
         onChangeText={setFieldOfStudy}
       />
-      <ThemedPicker
-        placeholder={t('education.institution_placeholder')}
-        selectedValue={institution}
-        onValueChange={(value) => setInstitution(value as Institution)}
-      >
-        {/* Map through institutions and create Picker.Item for each */}
-      </ThemedPicker>
+      <SearchableDropdown<UniversitySearchable>
+        queryFunc={(query: string) => {
+          return queryUniversities(query, UniversityIndexableProperty.Name).map(
+            (univ) => ({
+              ...univ,
+              label: univ.name,
+            })
+          );
+        }}
+        onSelect={(item) => setUniversity(item)}
+      />
       <CrossPlatformDatePicker
         value={startDate ?? new Date()}
         onChange={setStartDate}
@@ -89,5 +108,3 @@ export const AddEducationForm = forwardRef<
     </ScrollView>
   );
 });
-
-AddEducationForm.displayName = 'AddEducationForm';
