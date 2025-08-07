@@ -1,3 +1,4 @@
+import { Spacing } from '@/constants';
 import { useTheme } from '@/theme';
 import { Picker, PickerProps } from '@react-native-picker/picker';
 import { StyleSheet } from 'react-native';
@@ -24,7 +25,8 @@ export function ThemedPicker({ ...props }: ThemedPickerProps) {
 
 const styles = StyleSheet.create({
   picker: {
-    padding: 16,
+    padding: Spacing.formInputPadding,
+    borderWidth: 1,
   },
   pickerItem: {},
 });

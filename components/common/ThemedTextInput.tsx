@@ -1,3 +1,5 @@
+import { Spacing } from '@/constants';
+import { Sizing } from '@/constants/style/Sizing';
 import { useTheme } from '@/theme';
 import { StyleSheet, TextInput, TextInputProps } from 'react-native';
 
@@ -22,8 +24,7 @@ export function ThemedTextInput(props: ThemedTextInputProps) {
 
 const styles = StyleSheet.create({
   textInput: {
-    padding: 16,
-    borderColor: 'gray',
-    borderWidth: 1,
+    padding: Spacing.formInputPadding,
+    borderWidth: Sizing.formInputBorderWidth,
   },
 });
