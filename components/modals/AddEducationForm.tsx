@@ -7,7 +7,13 @@ import {
 import { ThemedTextInput } from '@/components';
 import { AddModalFormRef } from '@/components/common/AddModal';
 import { CrossPlatformDatePicker } from '@/components/common/CrossPlatformDatePicker';
-import { forwardRef, useImperativeHandle, useMemo, useState } from 'react';
+import {
+  forwardRef,
+  useCallback,
+  useImperativeHandle,
+  useMemo,
+  useState,
+} from 'react';
 import { useTranslation } from 'react-i18next';
 import { ScrollView } from 'react-native';
 import { SearchableDropdown } from '../common/SearchableDropdown';
@@ -72,6 +78,34 @@ export const AddEducationForm = forwardRef<
     },
   }));
 
+  const handleGpaChange = useCallback((text: string) => {
+    const value = text ? parseFloat(text) : undefined;
+    if (value && isNaN(value)) {
+      console.error('Invalid GPA value:', text);
+      return;
+    }
+    setGpa(value);
+  }, []);
+
+  const searchUniversities = useCallback(
+    (query: string) => {
+      return queryUniversities(query, UniversityIndexableProperty.Name).map(
+        (univ) => ({
+          ...univ,
+          label: univ.name,
+        })
+      );
+    },
+    [queryUniversities]
+  );
+
+  const handleSelectUniversity = useCallback(
+    (university: UniversitySearchable) => {
+      setUniversity(university);
+    },
+    [setUniversity]
+  );
+
   return (
     <ScrollView>
       <ThemedTextInput
@@ -81,15 +115,8 @@ export const AddEducationForm = forwardRef<
         onChangeText={setFieldOfStudy}
       />
       <SearchableDropdown<UniversitySearchable>
-        queryFunc={(query: string) => {
-          return queryUniversities(query, UniversityIndexableProperty.Name).map(
-            (univ) => ({
-              ...univ,
-              label: univ.name,
-            })
-          );
-        }}
-        onSelect={(item) => setUniversity(item)}
+        queryFunc={searchUniversities}
+        onSelect={handleSelectUniversity}
       />
       <CrossPlatformDatePicker
         value={startDate ?? new Date()}
@@ -100,10 +127,11 @@ export const AddEducationForm = forwardRef<
         onChange={setEndDate}
       />
       <ThemedTextInput
-        inputMode='decimal'
+        inputMode='numeric'
+        keyboardType='numeric'
         placeholder={t('education.gpa_placeholder')}
-        value={gpa !== undefined ? gpa.toString() : '4.0'}
-        onChangeText={(text) => setGpa(text ? parseFloat(text) : undefined)}
+        value={gpa?.toString() ?? ''}
+        onChangeText={handleGpaChange}
       />
     </ScrollView>
   );
