@@ -1,29 +1,28 @@
+import { queryData } from '@/api/utils/queryData';
 import { useCallback, useMemo } from 'react';
-import { University, UniversityIndexableProperty } from '..';
+import z from 'zod';
+import { University, UniversityIndexableProperty, UniversitySchema } from '..';
 import universitiesJson from '../world_universities_and_domains.json';
 
 export function useUniversities() {
-  const universities = useMemo(() => universitiesJson as University[], []);
+  const universities: University[] = useMemo(() => {
+    const result = z.array(UniversitySchema).safeParse(universitiesJson);
+    if (result.error) console.error(result.error);
+    return result.success ? result.data : [];
+  }, []);
 
-  /**
-   * Queries the list of universities based on a specific indexable property.
-   * @param query The query string to search for.
-   * @param indexableProperty The property to search within the university object.
-   * @param reverse Whether to reverse the filter logic. If true, it will return universities that do not match the query.
-   * @returns An array of universities that match (or do not match) the query.
-   */
   const queryUniversities = useCallback(
     (
       query: string,
-      indexableProperty: UniversityIndexableProperty,
-      reverse: boolean = false
+      indexableProperty: UniversityIndexableProperty
     ): University[] => {
-      return universities.filter((university) => {
-        const value = university[indexableProperty]?.includes(query);
-        return reverse ? !value : value;
+      return queryData({
+        data: universities,
+        query,
+        indexableProperty,
       });
     },
-    []
+    [universities]
   );
 
   return {

@@ -1,17 +1,13 @@
+import { Major, MajorSchema } from '../majors/models';
 import { University, UniversitySchema } from '../universities';
-import {
-  Activity,
-  ActivitySchema,
-  Degree,
-  DegreeSchema,
-} from './subattributes';
+import { Activity, ActivitySchema } from './subattributes';
 
 import { z } from 'zod';
 
 export interface Education {
   id: number;
-  majors?: Degree[];
-  minors?: Degree[];
+  majors?: Major[];
+  minors?: Major[];
   fieldOfStudy?: string;
   university: University;
   activities?: Activity[];
@@ -22,8 +18,8 @@ export interface Education {
 
 export const EducationSchema = z.object({
   id: z.number(),
-  majors: z.array(DegreeSchema).optional(),
-  minors: z.array(DegreeSchema).optional(),
+  majors: z.array(MajorSchema).optional(),
+  minors: z.array(MajorSchema).optional(),
   fieldOfStudy: z.string().optional(),
   university: UniversitySchema,
   activities: z.array(ActivitySchema).optional(),

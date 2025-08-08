@@ -27,7 +27,9 @@
     "add_education": "Add Education",
     "field_of_study_placeholder": "Field of study",
     "gpa_placeholder": "GPA",
-    "institution_placeholder": "Institute/University"
+    "institution_placeholder": "Institute/University",
+    "major_placeholder": "Search for major(s)...",
+    "minor_placeholder": "Search for minor(s)..."
   },
   "experience": {
     "add": "Add Position",
@@ -69,6 +71,7 @@
   "reset_document": "Reset Document",
   "reset_document_confirmation": "Are you sure you want to reset your CV? This will erase ALL DATA!!",
   "reset_document_confirmation_title": "Reset CV",
+  "search": "Search...",
   "skills": {
     "add_skill": "Add Skill"
   },

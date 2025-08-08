@@ -14,7 +14,7 @@ export const UniversityIndexablePropertySchema = z.enum(
 export interface University {
   [UniversityIndexableProperty.Name]: string;
   [UniversityIndexableProperty.Country]: string;
-  [UniversityIndexableProperty.StateProvince]?: string;
+  [UniversityIndexableProperty.StateProvince]?: string | null;
   [UniversityIndexableProperty.AlphaTwoCode]: string;
   domains: string[];
   web_pages: string[];

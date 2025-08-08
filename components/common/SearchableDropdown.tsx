@@ -22,6 +22,7 @@ export interface SearchableDropdownItem {
  */
 export interface SearchableDropdownProps<T extends SearchableDropdownItem> {
   queryFunc: (query: string) => T[];
+  placeholder?: string;
   onSelect: (item: T) => void;
 }
 
@@ -32,6 +33,7 @@ export interface SearchableDropdownProps<T extends SearchableDropdownItem> {
 export function SearchableDropdown<T extends SearchableDropdownItem>({
   queryFunc,
   onSelect,
+  placeholder,
 }: SearchableDropdownProps<T>) {
   const { t } = useTranslation();
   const {
@@ -84,7 +86,7 @@ export function SearchableDropdown<T extends SearchableDropdownItem>({
           onFocus={handleOnFocus}
           onSubmitEditing={hideList}
           value={searchQuery}
-          placeholder={t('university.search')}
+          placeholder={placeholder ?? t('search')}
         />
 
         {isListVisible ? (
