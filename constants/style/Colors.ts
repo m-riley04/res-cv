@@ -19,6 +19,7 @@ export const Colors = {
     transparent: 'rgba(0, 0, 0, 0)',
     darkened: 'rgba(0, 0, 0, 0.5)',
     listBackground: '#2b2b2c',
+    buttonBackground: '#0a7ea4',
   },
   light: {
     text: '#11181C',
@@ -35,5 +36,6 @@ export const Colors = {
     transparent: 'rgba(0, 0, 0, 0)',
     darkened: 'rgba(0, 0, 0, 0.5)',
     listBackground: '#a2a2ac',
+    buttonBackground: '#0a7ea4',
   },
 };

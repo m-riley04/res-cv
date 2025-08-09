@@ -6,7 +6,7 @@ import {
   UniversityIndexableProperty,
   useUniversities,
 } from '@/api/universities';
-import { ThemedText, ThemedTextInput } from '@/components';
+import { ThemedTextInput } from '@/components';
 import { AddModalFormRef } from '@/components/common/AddModal';
 import { CrossPlatformDatePicker } from '@/components/common/CrossPlatformDatePicker';
 import { Spacing } from '@/constants';
@@ -18,16 +18,9 @@ import {
   useState,
 } from 'react';
 import { useTranslation } from 'react-i18next';
-import { FlatList, Pressable, ScrollView, StyleSheet } from 'react-native';
+import { FlatList, ScrollView, StyleSheet } from 'react-native';
 import { SearchableDropdown } from '../common/SearchableDropdown';
-
-interface UniversitySearchable extends University {
-  label: string;
-}
-
-interface MajorSearchable extends Major {
-  label: string;
-}
+import { ListItem } from '../lists';
 
 export interface AddEducationFormProps {}
 
@@ -108,7 +101,7 @@ export const AddEducationForm = forwardRef<
   );
 
   const handleSelectUniversity = useCallback(
-    (university: UniversitySearchable) => {
+    (university: University) => {
       setUniversity(university);
     },
     [setUniversity]
@@ -127,14 +120,14 @@ export const AddEducationForm = forwardRef<
   );
 
   const handleSelectMajor = useCallback(
-    (major: MajorSearchable) => {
+    (major: Major) => {
       setMajors((prev) => [...prev, major]);
     },
     [setMajors]
   );
 
   const handleSelectMinor = useCallback(
-    (minor: MajorSearchable) => {
+    (minor: Major) => {
       setMinors((prev) => [...prev, minor]);
     },
     [setMinors]
@@ -168,13 +161,16 @@ export const AddEducationForm = forwardRef<
       <FlatList
         data={majors}
         renderItem={({ item }) => (
-          <Pressable onPress={() => handleDeleteMajor(item)}>
-            <ThemedText>{item[MajorIndexableProperty.MajorName]}</ThemedText>
-          </Pressable>
+          <ListItem<Major>
+            item={item}
+            getLabel={(item) => item[MajorIndexableProperty.MajorName]}
+            onPressRemove={() => handleDeleteMajor(item)}
+          />
         )}
         keyExtractor={(item) => item[MajorIndexableProperty.RowId].toString()}
       />
-      <SearchableDropdown<MajorSearchable>
+      <SearchableDropdown<Major>
+        getLabel={(item) => item[MajorIndexableProperty.MajorName]}
         placeholder={t('education.major_placeholder')}
         queryFunc={searchMajors}
         onSelect={handleSelectMajor}
@@ -182,18 +178,22 @@ export const AddEducationForm = forwardRef<
       <FlatList
         data={minors}
         renderItem={({ item }: { item: Major }) => (
-          <Pressable onPress={() => handleDeleteMinor(item)}>
-            <ThemedText>{item[MajorIndexableProperty.MajorName]}</ThemedText>
-          </Pressable>
+          <ListItem<Major>
+            item={item}
+            getLabel={(item) => item[MajorIndexableProperty.MajorName]}
+            onPressRemove={() => handleDeleteMajor(item)}
+          />
         )}
         keyExtractor={(item) => item[MajorIndexableProperty.RowId].toString()}
       />
-      <SearchableDropdown<MajorSearchable>
+      <SearchableDropdown<Major>
+        getLabel={(item) => item[MajorIndexableProperty.MajorName]}
         placeholder={t('education.minor_placeholder')}
         queryFunc={searchMajors}
         onSelect={handleSelectMinor}
       />
-      <SearchableDropdown<UniversitySearchable>
+      <SearchableDropdown<University>
+        getLabel={(item) => item.name}
         placeholder={t('university.search')}
         queryFunc={searchUniversities}
         onSelect={handleSelectUniversity}
@@ -221,5 +221,8 @@ const styles = StyleSheet.create({
   container: {},
   formContainer: {
     gap: Spacing.formInputPadding,
+  },
+  listMajors: {
+    minHeight: 50,
   },
 });

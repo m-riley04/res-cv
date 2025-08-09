@@ -8,32 +8,27 @@ import { ThemedText } from './ThemedText';
 import { ThemedTextInput } from './ThemedTextInput';
 
 /**
- * The base dropdown item interface that all items must extend.
- */
-export interface SearchableDropdownItem {
-  label: string;
-}
-
-/**
  * Props for the searchable dropdown component.
  * @param queryFunc The function to query itmes on based on the search string.
  * @param onSelect The function to call when an item is selected.
  * @template T The type of the dropdown item. Must extend the base SearchableDropdownItem.
  */
-export interface SearchableDropdownProps<T extends SearchableDropdownItem> {
+export interface SearchableDropdownProps<T> {
   queryFunc: (query: string) => T[];
   placeholder?: string;
   onSelect: (item: T) => void;
+  getLabel: (item: T) => string;
 }
 
 /**
  * A dropdown component that allows users to search and select an item from a list.
  * @returns
  */
-export function SearchableDropdown<T extends SearchableDropdownItem>({
+export function SearchableDropdown<T>({
   queryFunc,
   onSelect,
   placeholder,
+  getLabel,
 }: SearchableDropdownProps<T>) {
   const { t } = useTranslation();
   const {
@@ -67,7 +62,7 @@ export function SearchableDropdown<T extends SearchableDropdownItem>({
   const handleSelectItem = useCallback(
     (item: T) => {
       onSelect(item);
-      setSearchQuery(item.label);
+      setSearchQuery(getLabel(item));
       hideList();
     },
     [onSelect, hideList]
@@ -101,7 +96,7 @@ export function SearchableDropdown<T extends SearchableDropdownItem>({
             data={queriedItems}
             renderItem={({ item }: { item: T }) => (
               <Pressable onPress={() => handleSelectItem(item)}>
-                <ThemedText>{item.label}</ThemedText>
+                <ThemedText>{getLabel(item)}</ThemedText>
               </Pressable>
             )}
           />
