@@ -8,6 +8,7 @@ import React, {
   useEffect,
   useState,
 } from 'react';
+import { Platform } from 'react-native';
 
 const DOCUMENT_STORAGE_KEY = '@res_cv_document';
 const DEFAULT_EXPORT_FILE_NAME = 'cv';
@@ -65,8 +66,16 @@ export function DocumentProvider({ children }: DocumentProviderProps) {
     try {
       const storedDocument = await AsyncStorage.getItem(DOCUMENT_STORAGE_KEY);
       if (storedDocument) {
-        const parsedDocument = JSON.parse(storedDocument);
-        setDocumentData(parsedDocument);
+        const parsed = CvDocumentSchema.safeParse(JSON.parse(storedDocument));
+        if (parsed.success) {
+          setDocumentData(parsed.data);
+        } else {
+          console.error(
+            'Stored document failed validation, using default:',
+            parsed.error
+          );
+          setDocumentData(defaultDocument);
+        }
       }
     } catch (error) {
       console.error('Error loading document from storage:', error);
@@ -99,15 +108,21 @@ export function DocumentProvider({ children }: DocumentProviderProps) {
   ) => {
     try {
       const jsonDocument = JSON.stringify(documentData, null, 2);
-      const blob = new Blob([jsonDocument], { type: 'application/json' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `${fileName}.json`;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
+      // Web pathway
+      if (typeof window !== 'undefined' && typeof document !== 'undefined') {
+        const blob = new Blob([jsonDocument], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${fileName}.json`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        return;
+      }
+      // Native pathway not implemented without expo-file-system and expo-sharing
+      console.warn('Export is only implemented for web at the moment.');
     } catch (error) {
       console.error('Error exporting document:', error);
     }
@@ -118,16 +133,23 @@ export function DocumentProvider({ children }: DocumentProviderProps) {
    * It reads the file, parses it as JSON, and updates the document state.
    */
   const importDocument = async () => {
-    const pickerOptions = {};
-    const file = await DocumentPicker.getDocumentAsync(pickerOptions);
+    const file = await DocumentPicker.getDocumentAsync({
+      type: 'application/json',
+    });
     const first = (file.assets ?? []).length > 0 ? file.assets?.[0] : null;
     if (!first) {
       console.error('No file selected for import');
       return;
     }
 
-    // Convert the blob to text, then parse it as JSON
-    const text = await first.file?.text();
+    let text: string | undefined;
+    // Web provides a File object
+    if (first.file && 'text' in first.file) {
+      text = await (first.file as unknown as File).text();
+    } else if (Platform.OS !== 'web') {
+      console.warn('Import is only implemented for web at the moment.');
+    }
+
     if (!text) {
       console.error('No text content found in the selected file');
       return;
@@ -142,7 +164,6 @@ export function DocumentProvider({ children }: DocumentProviderProps) {
     }
 
     setDocumentData(doc.data);
-
     return doc.data;
   };
 

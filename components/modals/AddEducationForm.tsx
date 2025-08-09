@@ -80,12 +80,19 @@ export const AddEducationForm = forwardRef<
   }));
 
   const handleGpaChange = useCallback((text: string) => {
-    const value = text ? parseFloat(text) : undefined;
-    if (value && isNaN(value)) {
+    const normalized = text?.replace(',', '.').trim();
+    if (!normalized) {
+      setGpa(undefined);
+      return;
+    }
+    const value = Number(normalized);
+    if (Number.isNaN(value)) {
       console.error('Invalid GPA value:', text);
       return;
     }
-    setGpa(value);
+    // Clamp to [0, 6] to match schema
+    const clamped = Math.max(0, Math.min(6, value));
+    setGpa(clamped);
   }, []);
 
   const searchUniversities = useCallback(
@@ -121,28 +128,54 @@ export const AddEducationForm = forwardRef<
 
   const handleSelectMajor = useCallback(
     (major: Major) => {
-      setMajors((prev) => [...prev, major]);
+      setMajors((prev) => {
+        const exists = prev.some(
+          (m) =>
+            m[MajorIndexableProperty.RowId] ===
+            major[MajorIndexableProperty.RowId]
+        );
+        return exists ? prev : [...prev, major];
+      });
     },
     [setMajors]
   );
 
   const handleSelectMinor = useCallback(
     (minor: Major) => {
-      setMinors((prev) => [...prev, minor]);
+      setMinors((prev) => {
+        const exists = prev.some(
+          (m) =>
+            m[MajorIndexableProperty.RowId] ===
+            minor[MajorIndexableProperty.RowId]
+        );
+        return exists ? prev : [...prev, minor];
+      });
     },
     [setMinors]
   );
 
   const handleDeleteMajor = useCallback(
     (major: Major) => {
-      setMajors((prev) => prev.filter((m) => m !== major));
+      setMajors((prev) =>
+        prev.filter(
+          (m) =>
+            m[MajorIndexableProperty.RowId] !==
+            major[MajorIndexableProperty.RowId]
+        )
+      );
     },
     [setMajors]
   );
 
   const handleDeleteMinor = useCallback(
     (minor: Major) => {
-      setMinors((prev) => prev.filter((m) => m !== minor));
+      setMinors((prev) =>
+        prev.filter(
+          (m) =>
+            m[MajorIndexableProperty.RowId] !==
+            minor[MajorIndexableProperty.RowId]
+        )
+      );
     },
     [setMinors]
   );
@@ -168,6 +201,7 @@ export const AddEducationForm = forwardRef<
           />
         )}
         keyExtractor={(item) => item[MajorIndexableProperty.RowId].toString()}
+        scrollEnabled={false}
       />
       <SearchableDropdown<Major>
         getLabel={(item) => item[MajorIndexableProperty.MajorName]}
@@ -181,10 +215,11 @@ export const AddEducationForm = forwardRef<
           <ListItem<Major>
             item={item}
             getLabel={(item) => item[MajorIndexableProperty.MajorName]}
-            onPressRemove={() => handleDeleteMajor(item)}
+            onPressRemove={() => handleDeleteMinor(item)}
           />
         )}
         keyExtractor={(item) => item[MajorIndexableProperty.RowId].toString()}
+        scrollEnabled={false}
       />
       <SearchableDropdown<Major>
         getLabel={(item) => item[MajorIndexableProperty.MajorName]}
@@ -203,7 +238,7 @@ export const AddEducationForm = forwardRef<
         onChange={setStartDate}
       />
       <CrossPlatformDatePicker
-        value={endDate ?? new Date()}
+        value={endDate ?? startDate ?? new Date()}
         onChange={setEndDate}
       />
       <ThemedTextInput

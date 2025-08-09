@@ -15,8 +15,8 @@ export const ProjectSchema = z.object({
   id: z.number(),
   title: z.string(),
   description: z.string(),
-  startDate: z.date(),
-  endDate: z.date().optional(),
+  startDate: z.coerce.date(),
+  endDate: z.coerce.date().optional(),
   url: z.string().optional(),
   skills: z.array(SkillSchema),
 });

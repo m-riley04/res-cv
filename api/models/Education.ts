@@ -23,7 +23,7 @@ export const EducationSchema = z.object({
   fieldOfStudy: z.string().optional(),
   university: UniversitySchema,
   activities: z.array(ActivitySchema).optional(),
-  startDate: z.date(),
-  endDate: z.date().optional(),
+  startDate: z.coerce.date(),
+  endDate: z.coerce.date().optional(),
   gpa: z.number().min(0).max(6).optional(),
 });

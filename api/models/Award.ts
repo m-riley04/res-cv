@@ -11,5 +11,5 @@ export const AwardSchema = z.object({
   id: z.number(),
   title: z.string(),
   description: z.string(),
-  dateReceived: z.date(),
+  dateReceived: z.coerce.date(),
 });

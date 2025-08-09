@@ -7,6 +7,8 @@ import {
 } from '../enums';
 import { Company, CompanySchema } from './subattributes';
 
+import { z } from 'zod';
+
 export interface Position {
   id: number;
   jobTitle: string;
@@ -19,8 +21,6 @@ export interface Position {
   description: string;
   skills: Skill[];
 }
-
-import { z } from 'zod';
 export const PositionSchema = z.object({
   id: z.number(),
   jobTitle: z.string(),
@@ -28,8 +28,8 @@ export const PositionSchema = z.object({
   company: CompanySchema,
   location: z.string(),
   locationType: LocationTypeSchema,
-  startDate: z.date(),
-  endDate: z.date().optional(),
+  startDate: z.coerce.date(),
+  endDate: z.coerce.date().optional(),
   description: z.string(),
   skills: z.array(SkillSchema),
 });

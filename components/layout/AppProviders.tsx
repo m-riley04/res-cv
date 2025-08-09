@@ -8,6 +8,7 @@ import {
 } from '@react-navigation/native';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useFonts } from 'expo-font';
+import { useState } from 'react';
 import { I18nextProvider } from 'react-i18next';
 import { useColorScheme } from 'react-native';
 
@@ -22,7 +23,7 @@ export const AppProviders = ({ children }: { children: React.ReactNode }) => {
     return null;
   }
 
-  const queryClient = new QueryClient();
+  const [queryClient] = useState(() => new QueryClient());
 
   return (
     <I18nextProvider i18n={i18n}>

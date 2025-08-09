@@ -20,7 +20,7 @@ const config = {
     'components/**/*.{ts,tsx}',
     'constants/**/*.{ts,tsx}',
     'enums/**/*.{ts,tsx}',
-    'languages/**/*.{ts,tsx}',
+  'locales/**/*.{ts,tsx}',
     'theme/**/*.{ts,tsx}',
     // Exclude test files, config files, and type definitions
     '!**/__tests__/**',
