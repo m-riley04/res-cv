@@ -3,6 +3,7 @@ import { useTheme } from '@/theme';
 import { useClickAway, useMeasure } from '@uidotdev/usehooks';
 import React, { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { mergeRefs } from 'react-merge-refs';
 import { FlatList, Pressable, StyleSheet, View } from 'react-native';
 import { ThemedText } from './ThemedText';
 import { ThemedTextInput } from './ThemedTextInput';
@@ -75,35 +76,36 @@ export function SearchableDropdown<T>({
   }, [searchQuery, toggleList]);
 
   return (
-    <View ref={ref as any}>
-      <View ref={refClickAway as any}>
-        <ThemedTextInput
-          onChangeText={handleQueryChange}
-          onEndEditing={hideList}
-          onFocus={handleOnFocus}
-          onSubmitEditing={hideList}
-          value={searchQuery}
-          placeholder={placeholder ?? t('search')}
-        />
+    <View
+      ref={mergeRefs([ref, refClickAway]) as React.Ref<View>}
+      style={{ position: 'relative' }}
+    >
+      <ThemedTextInput
+        onChangeText={handleQueryChange}
+        onEndEditing={hideList}
+        onFocus={handleOnFocus}
+        onSubmitEditing={hideList}
+        value={searchQuery}
+        placeholder={placeholder ?? t('search')}
+      />
 
-        {isListVisible ? (
-          <FlatList
-            style={[
-              styles.list,
-              {
-                backgroundColor: theme.listBackground,
-                top: inputHeight,
-              },
-            ]}
-            data={queriedItems}
-            renderItem={({ item }: { item: T }) => (
-              <Pressable onPress={() => handleSelectItem(item)}>
-                <ThemedText>{getLabel(item)}</ThemedText>
-              </Pressable>
-            )}
-          />
-        ) : null}
-      </View>
+      {isListVisible ? (
+        <FlatList
+          style={[
+            styles.list,
+            {
+              backgroundColor: theme.listBackground,
+              top: inputHeight,
+            },
+          ]}
+          data={queriedItems}
+          renderItem={({ item }: { item: T }) => (
+            <Pressable onPress={() => handleSelectItem(item)}>
+              <ThemedText>{getLabel(item)}</ThemedText>
+            </Pressable>
+          )}
+        />
+      ) : null}
     </View>
   );
 }
@@ -116,6 +118,5 @@ const styles = StyleSheet.create({
     width: '100%',
     maxHeight: 200,
     position: 'absolute',
-    zIndex: 999,
   },
 });

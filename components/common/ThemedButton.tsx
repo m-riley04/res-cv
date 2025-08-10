@@ -11,11 +11,7 @@ export function ThemedButton({ title, ...props }: ThemedButtonProps) {
 
   return (
     <Pressable
-      style={[
-        styles.button,
-        { backgroundColor: theme.buttonBackground },
-        props.style,
-      ]}
+      style={[styles.button, { backgroundColor: theme.buttonBackground }]}
       {...props}
     >
       <ThemedText>{title}</ThemedText>
@@ -24,5 +20,8 @@ export function ThemedButton({ title, ...props }: ThemedButtonProps) {
 }
 
 const styles = StyleSheet.create({
-  button: {},
+  button: {
+    borderRadius: 8,
+    textAlign: 'center',
+  },
 });

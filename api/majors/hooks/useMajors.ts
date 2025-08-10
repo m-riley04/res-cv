@@ -28,8 +28,18 @@ export function useMajors() {
     [majors]
   );
 
+  const getKey = useCallback((major: Major) => {
+    return major[MajorIndexableProperty.RowId].toString();
+  }, []);
+
+  const getLabel = useCallback((major: Major) => {
+    return major[MajorIndexableProperty.MajorName];
+  }, []);
+
   return {
     majors,
     queryMajors,
+    getKey,
+    getLabel,
   };
 }
