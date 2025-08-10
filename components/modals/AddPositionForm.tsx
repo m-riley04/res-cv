@@ -14,17 +14,17 @@ export interface AddPositionFormProps {
 export const AddPositionForm = forwardRef<
   AddModalFormRef<Position>,
   AddPositionFormProps
->(({}, ref) => {
+>((_, ref) => {
   const { t } = useTranslation();
   const [jobTitle, setJobTitle] = useState('');
   const [employmentType, setEmploymentType] = useState<EmploymentType>();
-  const [company, setCompany] = useState<Company>();
+  const [company, _setCompany] = useState<Company>();
   const [location, setLocation] = useState('');
   const [locationType, setLocationType] = useState<LocationType>();
   const [startDate, setStartDate] = useState<Date>();
   const [endDate, setEndDate] = useState<Date>();
   const [description, setDescription] = useState('');
-  const [skills, setSkills] = useState<Skill[]>([]);
+  const [skills, _setSkills] = useState<Skill[]>([]);
 
   useImperativeHandle(ref, () => ({
     getData: () => {

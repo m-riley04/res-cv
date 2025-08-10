@@ -1,4 +1,13 @@
 {
+  "eslint.enable": true,
+  "eslint.useFlatConfig": true,
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact"
+  ],
+  "eslint.workingDirectories": [{ "mode": "auto" }],
   "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
     "source.fixAll": "always",
@@ -9,10 +18,8 @@
     "source.fixAll.eslint": "always",
     "source.addMissingImports.ts": "always"
   },
-  "eslint.validate": ["javascript", "typescript"],
   "eslint.format.enable": true,
   "eslint.lintTask.enable": true,
-  "eslint.run": "onSave",
   "eslint.codeAction.disableRuleComment": {
     "enable": true,
     "location": "separateLine",

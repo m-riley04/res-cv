@@ -23,24 +23,21 @@ export function ThemedText({
   /**
    * Gets the text style based on the provided type.
    */
-  const getTextStyle = useCallback(
-    (type: TextType) => {
-      switch (type) {
-        case TextType.Title:
-          return styles.title;
-        case TextType.DefaultSemiBold:
-          return styles.defaultSemiBold;
-        case TextType.Subtitle:
-          return styles.subtitle;
-        case TextType.Link:
-          return styles.link;
-        case TextType.Default:
-        default:
-          return styles.default;
-      }
-    },
-    [theme.link]
-  );
+  const getTextStyle = useCallback((type: TextType) => {
+    switch (type) {
+      case TextType.Title:
+        return styles.title;
+      case TextType.DefaultSemiBold:
+        return styles.defaultSemiBold;
+      case TextType.Subtitle:
+        return styles.subtitle;
+      case TextType.Link:
+        return styles.link;
+      case TextType.Default:
+      default:
+        return styles.default;
+    }
+  }, []);
 
   /**
    * Combines the base text style with the type-specific style and theme colors.
@@ -51,7 +48,7 @@ export function ThemedText({
       getTextStyle(type),
       style,
     ];
-  }, [type, getTextStyle]);
+  }, [type, theme.link, theme.text, getTextStyle, style]);
 
   return <Text style={textStyle} {...rest} />;
 }

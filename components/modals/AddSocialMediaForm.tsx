@@ -13,7 +13,7 @@ export interface AddSocialMediaFormProps {
 export const AddSocialMediaForm = forwardRef<
   AddModalFormRef<SocialMedia>,
   AddSocialMediaFormProps
->(({}, ref) => {
+>((_, ref) => {
   const { t } = useTranslation();
   const [username, setUsername] = useState('');
   const [platform, setPlatform] = useState<SocialMediaPlatform | undefined>();

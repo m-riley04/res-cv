@@ -29,23 +29,29 @@ export default function ContactInfoScreen() {
     hide: hideAddSocialMedia,
   } = useVisible();
 
-  const handleAddWebsite = useCallback((website: Website) => {
-    const updatedWebsites = [
-      ...(documentData.contactInfo.websites || []),
-      website,
-    ];
-    updateDocument({ contactInfo: { websites: updatedWebsites } });
-  }, []);
+  const handleAddWebsite = useCallback(
+    (website: Website) => {
+      const updatedWebsites = [
+        ...(documentData.contactInfo.websites || []),
+        website,
+      ];
+      updateDocument({ contactInfo: { websites: updatedWebsites } });
+    },
+    [documentData.contactInfo.websites, updateDocument]
+  );
 
-  const handleAddSocialMedia = useCallback((socialMedia: SocialMedia) => {
-    const updatedSocialMedia = [
-      ...(documentData.contactInfo.socialMedia || []),
-      socialMedia,
-    ];
-    updateDocument({
-      contactInfo: { socialMedia: updatedSocialMedia },
-    });
-  }, []);
+  const handleAddSocialMedia = useCallback(
+    (socialMedia: SocialMedia) => {
+      const updatedSocialMedia = [
+        ...(documentData.contactInfo.socialMedia || []),
+        socialMedia,
+      ];
+      updateDocument({
+        contactInfo: { socialMedia: updatedSocialMedia },
+      });
+    },
+    [documentData.contactInfo.socialMedia, updateDocument]
+  );
 
   return (
     <ScrollView>

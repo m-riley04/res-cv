@@ -11,7 +11,7 @@ export interface AddWebsiteFormProps {
 export const AddWebsiteForm = forwardRef<
   AddModalFormRef<Website>,
   AddWebsiteFormProps
->(({}, ref) => {
+>((_, ref) => {
   const { t } = useTranslation();
   const [label, setLabel] = useState('');
   const [url, setUrl] = useState('');

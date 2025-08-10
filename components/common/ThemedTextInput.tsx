@@ -3,8 +3,7 @@ import { Sizing } from '@/constants/style/Sizing';
 import { useTheme } from '@/theme';
 import { StyleSheet, TextInput, TextInputProps } from 'react-native';
 
-export interface ThemedTextInputProps extends TextInputProps {}
-export function ThemedTextInput(props: ThemedTextInputProps) {
+export function ThemedTextInput(props: TextInputProps) {
   const theme = useTheme();
   return (
     <TextInput

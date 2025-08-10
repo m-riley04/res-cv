@@ -2,6 +2,7 @@ import { Education } from '@/api';
 import { AddEducationForm, AddModal, ThemedText } from '@/components';
 import { useDocument } from '@/contexts';
 import { useVisible } from '@/hooks';
+import { useMessages } from '@/messaging/hooks';
 import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button, ScrollView, StyleSheet, View } from 'react-native';
@@ -11,11 +12,16 @@ export default function EducationScreen() {
   const { visible, show, hide } = useVisible();
   const { documentData, updateDocument } = useDocument();
 
-  const handleAddEducation = useCallback((education: Education) => {
-    console.log('Adding education:', education);
-    const updatedEducation = [...(documentData.education || []), education];
-    updateDocument({ education: updatedEducation });
-  }, []);
+  const messenger = useMessages();
+
+  const handleAddEducation = useCallback(
+    (education: Education) => {
+      messenger.debug(`Adding education: ${JSON.stringify(education)}`);
+      const updatedEducation = [...(documentData.education || []), education];
+      updateDocument({ education: updatedEducation });
+    },
+    [documentData.education, messenger, updateDocument]
+  );
 
   return (
     <ScrollView>

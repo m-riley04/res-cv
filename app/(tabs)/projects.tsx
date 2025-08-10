@@ -11,7 +11,7 @@ export default function ProjectsScreen() {
   const { t } = useTranslation();
   const { visible, show, hide } = useVisible();
 
-  const handleAddProject = useCallback((project: Project) => {
+  const handleAddProject = useCallback((_project: Project) => {
     // Logic to handle adding a project
   }, []);
   return (

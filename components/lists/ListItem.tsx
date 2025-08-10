@@ -16,7 +16,7 @@ export function ListItem<T>({
   onPress,
   onPressRemove,
 }: ListItemProps<T>) {
-  const theme = useTheme();
+  const _theme = useTheme();
   const { t } = useTranslation();
   return (
     <TouchableOpacity

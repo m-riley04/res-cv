@@ -20,7 +20,7 @@ export function CrossPlatformDatePicker({
     return (
       <DateTimePicker
         value={value}
-        onChange={(event, selectedDate) => {
+        onChange={(_event, selectedDate) => {
           if (selectedDate) {
             onChange(selectedDate);
           }

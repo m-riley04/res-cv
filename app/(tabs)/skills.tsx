@@ -10,7 +10,7 @@ export default function SkillsScreen() {
   const { t } = useTranslation();
   const { visible, show, hide } = useVisible();
 
-  const handleAddSkill = useCallback((skill: Skill) => {
+  const handleAddSkill = useCallback((_skill: Skill) => {
     // Logic to handle adding a Skill
   }, []);
   return (

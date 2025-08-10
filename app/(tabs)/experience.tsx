@@ -11,7 +11,7 @@ export default function ExperienceScreen() {
   const { t } = useTranslation();
   const { visible, show, hide } = useVisible();
 
-  const handleAddPosition = useCallback((position: Position) => {
+  const handleAddPosition = useCallback((_position: Position) => {
     // Logic to handle adding a position
   }, []);
 

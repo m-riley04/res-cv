@@ -2,38 +2,56 @@ import { Alert, Button, Platform, StyleSheet, View } from 'react-native';
 
 import { ThemedText } from '@/components/common';
 import { useDocument } from '@/contexts';
-import { useCallback } from 'react';
+import { MessageService } from '@/messaging';
+import { MessageType } from '@/messaging/enums';
+import { useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export default function HomeScreen() {
   const { t } = useTranslation();
   const data = useDocument();
+  const messenger = useMemo(() => MessageService.getInstance(), []);
 
   const handleExportDocument = useCallback(() => {
     data
       .exportDocument()
       .then(() => {
-        console.log('Document exported successfully');
+        messenger.message(
+          'Document exported successfully',
+          MessageType.Success
+        );
       })
       .catch((error) => {
-        console.error('Error exporting document:', error);
+        messenger.message(
+          `Error exporting document: ${error}`,
+          MessageType.Error
+        );
       });
-  }, [data]);
+  }, [data, messenger]);
 
   const handleImportDocument = useCallback(() => {
     data
       .importDocument()
       .then((ret) => {
         if (!ret) {
-          console.error('Document failed to import or was cancelled.');
+          messenger.message(
+            'Document failed to import or was cancelled.',
+            MessageType.Error
+          );
           return;
         }
-        console.log('Document imported successfully');
+        messenger.message(
+          'Document imported successfully',
+          MessageType.Success
+        );
       })
       .catch((error) => {
-        console.error('Error importing document:', error);
+        messenger.message(
+          `Error importing document: ${error}`,
+          MessageType.Error
+        );
       });
-  }, [data]);
+  }, [data, messenger]);
 
   const handleResetDocument = useCallback(() => {
     data.resetDocument();
@@ -66,7 +84,7 @@ export default function HomeScreen() {
     }
 
     handleResetDocument();
-  }, [data, t]);
+  }, [t, handleResetDocument]);
 
   return (
     <View>

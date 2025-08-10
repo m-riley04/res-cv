@@ -10,7 +10,7 @@ export default function AwardsScreen() {
   const { t } = useTranslation();
   const { visible, show, hide } = useVisible();
 
-  const handleAddAward = useCallback((award: Award) => {
+  const handleAddAward = useCallback((_award: Award) => {
     // Logic to handle adding a Award
   }, []);
   return (

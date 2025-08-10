@@ -13,14 +13,14 @@ export interface AddProjectFormProps {
 export const AddProjectForm = forwardRef<
   AddModalFormRef<Project>,
   AddProjectFormProps
->(({}, ref) => {
+>((_, ref) => {
   const { t } = useTranslation();
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [startDate, setStartDate] = useState<Date>();
   const [endDate, setEndDate] = useState<Date>();
   const [url, setUrl] = useState('');
-  const [skills, setSkills] = useState<Skill[]>([]);
+  const [skills, _setSkills] = useState<Skill[]>([]);
 
   useImperativeHandle(ref, () => ({
     getData: () => {

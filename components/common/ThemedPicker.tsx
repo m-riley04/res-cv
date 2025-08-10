@@ -3,9 +3,7 @@ import { useTheme } from '@/theme';
 import { Picker, PickerProps } from '@react-native-picker/picker';
 import { StyleSheet } from 'react-native';
 
-export interface ThemedPickerProps extends PickerProps {}
-
-export function ThemedPicker({ ...props }: ThemedPickerProps) {
+export function ThemedPicker({ ...props }: PickerProps) {
   const theme = useTheme();
   return (
     <Picker

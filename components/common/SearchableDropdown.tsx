@@ -33,7 +33,7 @@ export function SearchableDropdown<T>({
   const { t } = useTranslation();
   const {
     visible: isListVisible,
-    show: showList,
+    show: _showList,
     hide: hideList,
     toggle: toggleList,
   } = useVisible();
@@ -65,12 +65,12 @@ export function SearchableDropdown<T>({
       setSearchQuery(getLabel(item));
       hideList();
     },
-    [onSelect, hideList]
+    [onSelect, hideList, getLabel]
   );
 
   const handleOnFocus = useCallback(() => {
     toggleList(searchQuery.length > 0);
-  }, [isListVisible, searchQuery, toggleList]);
+  }, [searchQuery, toggleList]);
 
   return (
     <View ref={ref as any}>
