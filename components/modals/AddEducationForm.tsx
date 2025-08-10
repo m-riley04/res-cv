@@ -218,6 +218,7 @@ export const AddEducationForm = forwardRef<AddModalFormRef<Education>>(
           placeholder={t('education.major_placeholder')}
           queryFunc={searchMajors}
           onSelect={handleSelectMajor}
+          clearOnSelection={true}
         />
         <FlatList
           data={minors}
@@ -236,6 +237,7 @@ export const AddEducationForm = forwardRef<AddModalFormRef<Education>>(
           placeholder={t('education.minor_placeholder')}
           queryFunc={searchMajors}
           onSelect={handleSelectMinor}
+          clearOnSelection={true}
         />
         <SearchableDropdown<University>
           getLabel={(item) => item.name}

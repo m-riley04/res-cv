@@ -6,6 +6,7 @@ import { MessageService } from '@/messaging';
 import { MessageType } from '@/messaging/enums';
 import { useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
+// ToastManager is mounted once at the app root; don't mount it here
 
 export default function HomeScreen() {
   const { t } = useTranslation();

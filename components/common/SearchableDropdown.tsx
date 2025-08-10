@@ -18,6 +18,7 @@ export interface SearchableDropdownProps<T> {
   placeholder?: string;
   onSelect: (item: T) => void;
   getLabel: (item: T) => string;
+  clearOnSelection?: boolean;
 }
 
 /**
@@ -29,6 +30,7 @@ export function SearchableDropdown<T>({
   onSelect,
   placeholder,
   getLabel,
+  clearOnSelection = false,
 }: SearchableDropdownProps<T>) {
   const { t } = useTranslation();
   const {
@@ -62,10 +64,10 @@ export function SearchableDropdown<T>({
   const handleSelectItem = useCallback(
     (item: T) => {
       onSelect(item);
-      setSearchQuery(getLabel(item));
+      setSearchQuery(clearOnSelection ? '' : getLabel(item));
       hideList();
     },
-    [onSelect, hideList, getLabel]
+    [onSelect, hideList, getLabel, clearOnSelection]
   );
 
   const handleOnFocus = useCallback(() => {

@@ -11,7 +11,9 @@ import { useFonts } from 'expo-font';
 import { useState } from 'react';
 import { I18nextProvider } from 'react-i18next';
 import { useColorScheme } from 'react-native';
-import ToastManager from 'toastify-react-native/components/ToastManager';
+import ToastManager from 'toastify-react-native';
+
+const DEFAULT_TOAST_MODAL = false;
 
 export const AppProviders = ({ children }: { children: React.ReactNode }) => {
   const colorScheme = useColorScheme();
@@ -28,7 +30,7 @@ export const AppProviders = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <I18nextProvider i18n={i18n}>
-      <ToastManager />
+      <ToastManager useModal={DEFAULT_TOAST_MODAL} />
       <QueryClientProvider client={queryClient}>
         <DocumentProvider>
           <ThemeProvider

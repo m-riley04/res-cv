@@ -13,22 +13,29 @@ export interface MessageServiceConfig {
  * A singleton service that handles messaging and toast notifications.
  */
 export class MessageService {
-  static _messageService: MessageService;
+  static _instance: MessageService;
+
+  // Prevent direct instantiation
+  constructor() {
+    if (MessageService._instance) {
+      throw new Error(
+        'Error: Instantiation failed: Use MessageService.getInstance() instead of new.'
+      );
+    }
+  }
 
   static getInstance() {
-    if (MessageService._messageService === null) {
-      MessageService._messageService = new MessageService();
+    if (!MessageService._instance) {
+      MessageService._instance = new MessageService();
     }
 
-    return this._messageService;
+    return this._instance;
   }
 
   private config: MessageServiceConfig = {
     showDebugMessages: DEFAULT_SHOW_DEBUG_MESSAGES,
     logMessagesToConsole: DEFAULT_LOG_MESSAGES_TO_CONSOLE,
   };
-
-  public toast: typeof Toast = Toast;
 
   /**
    * Routes a message to the appropriate toast notification style/type.
@@ -38,16 +45,16 @@ export class MessageService {
   private routeMessage(msg: string, type: MessageType = MessageType.Info) {
     switch (type) {
       case MessageType.Info:
-        this.toast.info(msg);
+        Toast.info(msg);
         break;
       case MessageType.Error:
-        this.toast.error(msg);
+        Toast.error(msg);
         break;
       case MessageType.Warn:
-        this.toast.warn(msg);
+        Toast.warn(msg);
         break;
       case MessageType.Success:
-        this.toast.success(msg);
+        Toast.success(msg);
         break;
       case MessageType.Debug:
         this.debug(msg);
@@ -81,6 +88,6 @@ export class MessageService {
       console.log(`[DEBUG] ${msg}`);
     }
 
-    this.toast.info(msg);
+    Toast.info(msg);
   }
 }
